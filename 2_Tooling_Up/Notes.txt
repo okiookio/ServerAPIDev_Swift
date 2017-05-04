@@ -1,0 +1,92 @@
+2.3 COMMAND LINE SWIFT
+
+In Terminal
+swift --version = check that you have swift on your system
+swift = opens the swift REPL read-eval-print-loop (LLVM)
+
+2.4 IBM Swift Sandbox
+Online REPL = https://swift.sandbox.bluemix.net/#/repl
+
+2.7 HTTP, WEB FRAMEWORKS, DOCUMENTATION AND RESOURCES.
+
+HTTP = Hypertext Transfer Protocol. The foundation for data communication on the web.
+Structured text that used logical links (hyperlinks) between nodes containing text. A protocol to exchange hypertext.
+
+Web Framework = a software framework that is designed to support the development of web applications including web services, web resources and APIs. Web frameworks are aimed to alleviate the overhead associated with common activities performed in web development. They may: provide libraries for database access; templating frameworks; session management; promote code reuse.
+
+For this tutorial we will be using Kitura as our web framework. It was developed by IBM.
+
+RESOURCES:
+
+https://swift.org/
+Swift Programming Language (epub) in ibooks
+
+https://developer.ibm.com/swift/
+Extending Swift Values to the server (pdf)
+
+http://www.kitura.io/
+consider joining the slack channel for kitura as there are engineers available for problem solving.
+
+https://www.ibm.com/cloud-computing/bluemix/swift
+bluemix is a cloud platform provided by ibm.
+
+
+
+
+2.8 SWIFT PACKAGE MANAGER AND IBM SWIFT PACKAGE CATALOGUE
+
+Swift package manager is included with swift. Initialize a package:
+
+Tims-Macbook-Pro-2:hello-api timbeals$ swift package init --type executable
+Creating executable package: hello-api
+Creating Package.swift
+Creating Sources/
+Creating Sources/main.swift
+Creating Tests/
+
+Now you can open .main and add your dependencies.
+
+Tims-Macbook-Pro-2:hello-api timbeals$ nano package.swift
+
+Go to https://packagecatalog.com and find the dependencies that you want to work with. In this case we'll user Kitura and Helium Logger. Click the 'Include project in your code' button to save the link. Then in nano...
+
+import PackageDescription
+
+let package = Package(
+    name: "hello-api",
+    dependencies: [
+ (paste!!>>>>>) .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorV$
+                .Package(url: "https://github.com/IBM-Swift/HeliumLogger.git", $
+        ]
+)
+
+Get all dependencies and compile into an executable file.
+
+Tims-Macbook-Pro-2:hello-api timbeals$ swift build
+***lots of downloads***
+Linking ./.build/debug/hello-api
+
+
+Sources/main.swift is where code execution begins in server side swift.
+
+Tims-Macbook-Pro-2:hello-api timbeals$ .build/debug/hello-api
+My first server side swift line of code!
+
+
+
+
+
+Tims-Macbook-Pro-2:hello-api timbeals$  swift package generate-xcodeproj
+generated: ./hello-api.xcodeproj
+Tims-Macbook-Pro-2:hello-api timbeals$ ls
+Package.swift   Sources     hello-api.xcodeproj
+Packages    Tests
+Tims-Macbook-Pro-2:hello-api timbeals$ open hello-api.xcodeproj/
+Tims-Macbook-Pro-2:hello-api timbeals$
+  [Restored May 4, 2017, 9:25:32 AM]
+Last login: Thu May  4 09:24:57 on console
+Restored session: Thu 4 May 2017 09:24:16 PDT
+Tims-Macbook-Pro-2:hello-api timbeals$
+
+
+
