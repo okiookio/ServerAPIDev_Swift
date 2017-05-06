@@ -95,7 +95,12 @@ If you go to the kitura website, you can learn how to build an iOS app with kitu
 kitura.io Getting stared> Building within xcode.
 
 
+2.9 SETUP DOCKER
+Quit xcode
 
+We need to be able to test our project in Docker Compose to be able to see if it works on Linux systems.a way to setup a file to download an image and put it on your system.
+
+nano docker-compose.yml
 
 
 

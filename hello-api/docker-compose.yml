@@ -1,0 +1,7 @@
+hello-api:
+	image: ibmcom/swift-ubuntu
+	ports: 
+	- "8090:8090"
+	volumes:
+	- .:/root/hello-api
+	command: bash -c "swift build && hello-api/.build/debug/hello-api" 

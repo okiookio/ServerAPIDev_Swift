@@ -1,0 +1,17 @@
+Docker #4: Using Docker Hub
+
+https://hub.docker.com/
+
+You can search docker hub and use the images from your terminal.
+Tims-Macbook-Pro-2:KituraDocker timbeals$ docker search ibmcom
+
+To get the image that you want use the pull command
+Tims-Macbook-Pro-2:KituraDocker timbeals$ docker pull (NAME)
+
+check that you have the image
+Tims-Macbook-Pro-2:KituraDocker timbeals$ docker images
+
+spin up the container
+Tims-Macbook-Pro-2:KituraDocker timbeals$ docker run -itv $(pwd):/root -w /root --name swift-ubuntu -p 8090:8090 ibmcom/swift-ubuntu /bin/bash
+
+

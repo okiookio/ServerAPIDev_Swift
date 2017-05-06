@@ -1,0 +1,15 @@
+Docker #1: About
+
+A replacement to virtual machines. You can package your application into a standardized unit for software development. Docker wraps a piece of software into a comoplete file system that contains everything that is needed to run it (libraries etc). Guarantees that the application will always vbe run the same way regardless of the system that is running it.
+
+Containers are lightweight - containers running on a single machine share the same operating system kernel (no duplication). Images are made of layers that share common files.
+
+Containers isolate applications from one another and the underlying os.
+
+You can develop in the docker container and delploy to the ibm container service.
+
+Learn more at: https://www.docker.com
+
+
+
+

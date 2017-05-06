@@ -1,0 +1,103 @@
+Docker #3: Spin up first container github
+
+Open Docker:
+Click Docker icon and wait for the green light to show that it is running, before you type docker commands in the terminal.
+
+IMAGES:
+
+See your existing images:
+Tims-Macbook-Pro-2:~ timbeals$ docker images
+
+Remove an image:
+Tims-Macbook-Pro-2:~ timbeals$ docker rmi (image id or repository name)
+
+
+CONTAINERS:
+
+See if you have any containers running (ps = process status)
+
+Tims-Macbook-Pro-2:~ timbeals$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+See all containers (running or inactive)
+Tims-Macbook-Pro-2:~ timbeals$ docker ps -a
+
+Remove a specific container
+Tims-Macbook-Pro-2:~ timbeals$ docker rm (container id)
+
+Remove all containers (active and inactive)
+Tims-Macbook-Pro-2:~ timbeals$ docker rm $(docker ps -a -q)
+
+
+
+ADDING AN IMAGE:
+
+Go to https://hub.docker.com to find repositories with images.
+
+
+BUILD AN IMAGE FROM A DOCKER FILE (github)
+The docker file is like a config file. It lays out the recipe for creating the image.
+
+we will build the IBM-Swift/Swift-ubuntu-docker image which is located on github
+https://github.com/IBM-Swift/swift-ubuntu-docker/blob/master/swift-development/Dockerfile
+
+copy the code in the dockerfile (select "raw") and paste into an empty file (sublime text)
+save as Dockerfile
+
+Go to terminal and cd to the dockerfile
+
+build the image: (note that . means at this location)
+Tims-Macbook-Pro-2:Kitura_Docker timbeals$ docker build .
+
+add a repository name using the id
+Tims-Macbook-Pro-2:Kitura_Docker timbeals$ docker tag (id#) timbeals/ibmcom/ubuntu
+
+
+spin up a container from the image
+Tims-Macbook-Pro-2:Kitura_Docker timbeals$ docker run -itv $(pwd):/root -w /root --name temp_container timbeals/ibmcom-ubuntu /bin/bash
+
+
+-itv = interactive terminal (or pseudo tty which is the name of a terminal in unix) volume
+$(pwd):/root = sets the volume as the present working directory
+-w = working directory
+/root = sets the working directory to root
+--name temp_container = gives the container a name 'temp_container'
+timbeals/ibmcom-ubuntu = specifies the image that you want to use
+/bin/bash = specify the command to run. This will run bash in our interactive terminal
+
+Now everything that is in the directory of the dockerfile is available in our working linux container.
+
+root@2078b86fd4c9:~# ls
+Dockerfile
+root@2078b86fd4c9:~# pwd
+/root
+
+Stop the container running and return to your mac terminal
+root@2078b86fd4c9:~# exit
+
+Tims-Macbook-Pro-2:Kitura_Docker timbeals$ docker ps (no containers running)
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+Tims-Macbook-Pro-2:Kitura_Docker timbeals$ docker ps -a (but it is still an available container)
+CONTAINER ID        IMAGE                    COMMAND             CREATED             STATUS                          PORTS               NAMES
+2078b86fd4c9        timbeals/ibmcom-ubuntu   "/bin/bash"         12 minutes ago      Exited (0) About a minute ago                       temp_container
+
+
+Now you can simply start your existing container. Notice that you return to the mac prompt, but the container is running.
+Tims-Macbook-Pro-2:Kitura_Docker timbeals$ docker start temp_container (or use id#)
+temp_container
+
+To enter your container in the terminal (you will need to hit enter twice):
+Tims-Macbook-Pro-2:Kitura_Docker timbeals$ docker attach temp_container
+root@2078b86fd4c9:~#
+root@2078b86fd4c9:~#
+
+control p and then control q to leave docker container without turning it off.
+
+to start the container and attach in a single step you can use the -i flag
+Tims-Macbook-Pro-2:Kitura_Docker timbeals$ docker start temp_container -i
+
+
+
+
+
