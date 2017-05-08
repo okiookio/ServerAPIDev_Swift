@@ -1,0 +1,12 @@
+4.11 variables, operators and how computers work
+
+A variable is a container that holds a value of some  kind. It references a location in memory. It also makes our code more easily understandable.
+When you create a variable it is representing data stored in a memory location.
+The variable name gives meaning to the value. eg: var age = 23 is far more meaningful than just 23.
+
+Variables are stored in RAM - Random access memory. Stores data so that you can access it while your program is running. It is temporary and clears the data our when it is no longer needed (like when you close your app).
+
+If you have lots of applications open at once, they will all access the RAM simultaneously. If you don't have enough RAM then the data will go into wait lists (waiting for data to be cleared out) before they can be stored in RAM. This means your performance will be slower.
+
+
+

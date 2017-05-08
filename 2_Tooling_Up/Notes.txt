@@ -104,11 +104,32 @@ Tims-Macbook-Pro-2:hello-api timbeals$ nano docker-compose.yml
 Add the necessary details to the docker-compose file (look at file)
 Note that you cannot use 'tab' in your file creation, only spaces.
 
+#######################################################
+  GNU nano 2.0.6           File: docker-compose.yml
+
+app:
+  image: ibmcom/swift-ubuntu
+  ports:
+    - "8080:8080"
+  volumes:
+    - .:/root/hello-api
+  command: bash -c "cd /root/hello-api && swift package clean && swift build &&$
+
+
+A brief explanation:
+we're using the disk image ibmcom/swift-ubuntu
+we're mapping the docker container port to the local port 8080
+we're mapping our current directory . to the /root/hello-api in the docker container
+we're specifying four commands that will be performed one after the other to get the docker container up and running.
+
 To run these commands, make sure that you are in the directory that holds your docker-compose file.
 
 Tims-Macbook-Pro-2:hello-api timbeals$ docker-compose up
 
-Tims-Macbook-Pro-2:hello-api timbeals$ docker-compose stop
+STOP THE CONTAINER
+control c (from inside the running container)
+or
+Tims-Macbook-Pro-2:hello-api timbeals$ docker-compose stop (from a new terminal prompt)
 
 
 

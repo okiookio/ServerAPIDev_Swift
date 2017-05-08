@@ -53,6 +53,11 @@ Tims-Macbook-Pro-2:hello-api timbeals$ open hello-api.xcodeproj/
 
 select the executable type at the top of your xcode project and click run to test that everything builds correctly.
 
+******* BUILD XCODE PROJECT ********
+
+TEST FOR LINUX WITH DOCKER COMPOSE
+
+
 
 
 

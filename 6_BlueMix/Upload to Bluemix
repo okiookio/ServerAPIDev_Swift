@@ -1,0 +1,4 @@
+Upload to Bluemix
+
+The docker container uses the host-machine's file system. This is important because mac filesystems are less case-sensitive. So be wary that you are using correct case when you are typing file names.
+

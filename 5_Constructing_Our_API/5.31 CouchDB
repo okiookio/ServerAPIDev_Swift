@@ -1,0 +1,30 @@
+5.31 CouchDB
+
+Kitura has excellent support for couchDB
+CouchDB is a NodeSQL Database
+Uses javascript views to format data the way you need it.
+We will use couchDB within docker.
+
+
+Find an image with couchDB on Dockerhub
+klaemo/couchdb contains the correct version of couchDB 2.0.0
+
+perform a pull from docker hub to get the image onto your local device.
+Tims-Macbook-Pro-2:ServerAPIDev_Swift timbeals$ docker pull klaemo/couchdb:2.0.0
+
+
+Now we need to spin up our own container
+Tims-Macbook-Pro-2:ServerAPIDev_Swift timbeals$ docker run --name couch2 -p 5984:5984 -e COUCHDB_USER=tim -e COUCHDB_PASSWORD=123456 klaemo/couchdb:2.0.0
+
+an explanation:
+--name couch2 = name the container couch2
+-p 5984:5984 = match the docker port to our local port (This port number is provided in the image description on dockerhub)
+
+-e = set environment variables. CouchDB, by default runs in 'admin party mode'. This means that everyone has admin rights. We don't want this. Instead we can setup a single admin user:
+-e COUCHDB_USER=tim
+-e COUCHDB_PASSWORD=123456
+
+
+
+
+
