@@ -24,6 +24,107 @@ an explanation:
 -e COUCHDB_USER=tim
 -e COUCHDB_PASSWORD=123456
 
+Check that the container is running by going to localhost:5984. Here is the return msg:
+
+{
+"couchdb": "Welcome",
+"version": "2.0.0",
+"vendor": {
+"name": "The Apache Software Foundation"
+}
+}
+
+
+now change the url to read: http://localhost:5984/_utils
+Now you are in the admin area!!!
+
+WORKING IN THE ADMIN GUI
+
+Press 'create database' and name it.
+
+creating data
+
+CURL FROM TERMINAL
+
+Tims-Macbook-Pro-2:ServerAPIDev_Swift timbeals$ curl -H 'Content-Type: application/json' \
+> -X POST http://localhost:5984/test \
+> -d '{"type": "person", "name":"Tim Beals"}'
+{"ok":true,"id":"f9d3e6d2940463d842a6c5093300004b","rev":"1-99cde246e6f71781fe8c75cc7b6415f2"} <<<<response
+
+\ indicates a new line
+-H = header
+-X = request type
+-d = payload (in this case json)
+
+Notice that the response includes an automatically generated id and revision number.
+
+to check you can use a get request with the id:
+
+Tims-Macbook-Pro-2:ServerAPIDev_Swift timbeals$ curl http://localhost:5984/test/f9d3e6d2940463d842a6c5093300004b
+return>>>>>>>
+{"_id":"f9d3e6d2940463d842a6c5093300004b","_rev":"1-99cde246e6f71781fe8c75cc7b6415f2","type":"person","name":"Tim Beals"}
+
+FROM THE ADMIN GUI
+
+Click the + sign on the All Documents tab
+click the green create documents button.
+
+
+ORGANIZE YOUR DOCUMENTS INTO VIEWS FOR CURL REQUESTS
+
+Design Documents > New View
+
+name: _design/main_design
+
+index name: people (end point name)
+
+map function:
+
+function (doc) {
+  if (doc.type == "person") {
+    emit(doc._id, doc);
+  }
+}
+
+This is in javascript.
+For each document in the database, check if the 'type' key has the string value "person". if it does, put it in the view under its doc._id as the key and then the document itself as the value. This means that if the url is:
+
+http://localhost:5984/test/_design/main_design/_view/people
+
+Then couchDB will return all documents with a 'type' equal to 'person'
+
+
+REDUCE Function
+
+index name: count_people
+map function:
+function (doc) {
+  if (doc.type == "person") {
+      emit(doc._id, 1);
+  }
+}
+
+reduce: _count
+
+http://localhost:5984/test/_design/main_design/_view/count_people
+
+returns:
+
+{
+"rows": [
+{
+"key": null,
+"value": 2
+}
+]
+}
+
+Notice that the value: 2 is the number of person types we have created.
+
+
+
+
+
 
 
 

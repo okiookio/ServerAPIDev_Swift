@@ -75,6 +75,9 @@ root@2078b86fd4c9:~# pwd
 Stop the container running and return to your mac terminal
 root@2078b86fd4c9:~# exit
 
+or stop it from your terminal prompt with
+docker stop
+
 Tims-Macbook-Pro-2:Kitura_Docker timbeals$ docker ps (no containers running)
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 
