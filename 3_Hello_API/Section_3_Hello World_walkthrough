@@ -1,0 +1,58 @@
+Section 3: Hello World - simplified API walkthrough
+
+Goal:
+Build a simplified API with 3 end-points that are get
+Return static data
+push to bluemix
+
+
+create directory and cd into it
+create swift package
+Tims-Macbook-Pro-2:3_Hello_API timbeals$ mkdir hello-api
+Tims-Macbook-Pro-2:3_Hello_API timbeals$ cd hello-api/
+Tims-Macbook-Pro-2:hello-api timbeals$ swift package init --type executable
+
+open package.swift
+Tims-Macbook-Pro-2:hello-api timbeals$ nano Package.swift
+
+
+Go to swift package catalogue and grab kitura, helium logger, Swift-cfenv and put into dependencies array in package.swift
+(Note: Swift-cfenv is related to cloud foundry environment and allows us to access information about our bluemix environment)
+
+import PackageDescription
+
+let package = Package(
+    name: "hello-api",
+    dependencies: [
+        .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorVersion: $
+        .Package(url: "https://github.com/IBM-Swift/HeliumLogger.git", majorVer$
+        .Package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", majorVers$
+        ]
+)
+
+Grab packages and compile everything.
+
+Tims-Macbook-Pro-2:hello-api timbeals$ swift build
+
+Run main.swift to check that everything works.
+
+Tims-Macbook-Pro-2:hello-api timbeals$ .build/debug/hello-api
+Hello, world!
+
+(note: "Hello, world!" is the default code in main.swift)
+
+If you change your dependencies after you have created your xcode project file, you may need to delete it and create it again. In other words, try to plan your dependencies at the very beginning.
+
+Create your xcode project with the swift package manager
+
+Tims-Macbook-Pro-2:hello-api timbeals$ swift package generate-xcodeproj
+generated: ./hello-api.xcodeproj
+
+open the xcode project
+Tims-Macbook-Pro-2:hello-api timbeals$ open hello-api.xcodeproj/
+
+select the executable type at the top of your xcode project and click run to test that everything builds correctly.
+
+
+
+

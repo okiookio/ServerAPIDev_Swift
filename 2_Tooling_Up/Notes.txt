@@ -31,8 +31,6 @@ https://www.ibm.com/cloud-computing/bluemix/swift
 bluemix is a cloud platform provided by ibm.
 
 
-
-
 2.8 SWIFT PACKAGE MANAGER AND IBM SWIFT PACKAGE CATALOGUE
 
 Swift package manager is included with swift. Initialize a package:
@@ -44,11 +42,11 @@ Creating Sources/
 Creating Sources/main.swift
 Creating Tests/
 
-Now you can open .main and add your dependencies.
+Now you can open package.swift and add your dependencies.
 
 Tims-Macbook-Pro-2:hello-api timbeals$ nano package.swift
 
-Go to https://packagecatalog.com and find the dependencies that you want to work with. In this case we'll user Kitura and Helium Logger. Click the 'Include project in your code' button to save the link. Then in nano...
+Go to https://packagecatalog.com and find the dependencies that you want to work with. In this case we'll user Kitura and Helium Logger. Click the 'Include project in your code' button to save the link. Then in nano you can paste them into your dependencies array. Make sure that the .git extension is included.
 
 import PackageDescription
 
@@ -60,7 +58,7 @@ let package = Package(
         ]
 )
 
-Get all dependencies and compile into an executable file.
+Grab all dependency packages and compile into an executable file.
 
 Tims-Macbook-Pro-2:hello-api timbeals$ swift build
 ***lots of downloads***
@@ -90,17 +88,28 @@ If you want to run your code in xcode you just need to change the source from th
 
 Note that you don't have access to UIKit or other frameworks with opensource Swift on the server.
 
+(If you go to the kitura website, you can learn how to build an iOS app with kitura server in the same workspace!! GO:
+kitura.io Getting stared> Building within xcode.)
 
-If you go to the kitura website, you can learn how to build an iOS app with kitura server in the same workspace!! GO:
-kitura.io Getting stared> Building within xcode.
 
+2.9 DOCKER COMPOSE
 
-2.9 SETUP DOCKER
+We need to be able to test our project in Docker Compose to be able to see if it works on Linux systems. Docker Compose will download an image (if it's not already on your system) and then fire up the image and start it running with a command.
+
 Quit xcode
 
-We need to be able to test our project in Docker Compose to be able to see if it works on Linux systems.a way to setup a file to download an image and put it on your system.
+In terminal, cd to directory with your .xcodeproj. Create a docker compose file
+Tims-Macbook-Pro-2:hello-api timbeals$ nano docker-compose.yml
 
-nano docker-compose.yml
+Add the necessary details to the docker-compose file (look at file)
+Note that you cannot use 'tab' in your file creation, only spaces.
+
+To run these commands, make sure that you are in the directory that holds your docker-compose file.
+
+Tims-Macbook-Pro-2:hello-api timbeals$ docker-compose up
+
+Tims-Macbook-Pro-2:hello-api timbeals$ docker-compose stop
+
 
 
 
