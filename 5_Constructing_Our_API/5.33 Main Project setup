@@ -1,0 +1,179 @@
+5.33 Main Project setup
+
+STEPS:
+1. CREATE MODULES AND INIT SWIFT PACKAGE
+2. PUT DEPENDENCIES IN PACKAGE MANAGER AND BUILD TO DOWNLOAD THEM.
+3. HOUSEKEEPING: GITIGNORE, SWIFT-VERSION, CLOUD FOUNDRY IGNORE,
+4. DOCKERCOMPOSE FILE
+5. MANIFEST FOR BLUEMIX
+6. CREATE XCODE PROJ
+
+1. CREATE MODULES
+create a main directory with another directory inside it for our kitura project. We will later build the client-side app in the main directory.
+
+Tims-Macbook-Pro-2:ServerAPIDev_Swift timbeals$ mkdir FoodTruck
+Tims-Macbook-Pro-2:ServerAPIDev_Swift timbeals$ mkdir FoodTruck/FoodTruckAPI
+
+We will create two modules in our Kitura project
+1) FoodtruckAPI - a library or framework
+2) FoodtrucksServer - executable
+
+INITIALIZE THE SWIFT PACKAGE TO CREATE THE LIBRARY
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ swift package init
+
+MOVE INTO SOURCES
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ cd Sources/
+Tims-Macbook-Pro-2:Sources timbeals$ ls
+FoodTruckAPI.swift
+
+CREATE TWO NEW DIRECTORIES. ONE FOR THE LIBRARY AND THE OTHER FOR THE EXECUTABLE
+Tims-Macbook-Pro-2:Sources timbeals$ mkdir FoodTruckAPI
+Tims-Macbook-Pro-2:Sources timbeals$ mkdir FoodTruckServer
+Tims-Macbook-Pro-2:Sources timbeals$ ls
+FoodTruckAPI    FoodTruckAPI.swift  FoodTruckServer
+
+MOVE THE .SWIFT FILE INTO THE LIBRARY DIRECTORY
+Tims-Macbook-Pro-2:Sources timbeals$ mv FoodTruckAPI.swift FoodTruckAPI
+Tims-Macbook-Pro-2:Sources timbeals$ ls
+FoodTruckAPI  FoorTruckServer
+
+2. ENTER THE PACKAGE MANAGER AND CREATE YOUR TARGETS AND DEPENDENCIES.
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ nano Package.swift
+
+import PackageDescription
+
+let package = Package(
+    name: "FoodTruckAPI",
+    targets:[
+        Target(
+        name: "FoodTruckServer",
+        dependencies: [.Target(name:"FoodTruckAPI")]
+        ),
+        Target(
+        name: "FoodTruckAPI"
+        )
+        ],
+    dependencies: [
+        .Package(url: "https://github.com/IBM-Swift/Kitura.git", majorVersion: 1, minor: 7),
+        .Package(url: "https://github.com/IBM-Swift/Kitura-CouchDB.git", majorVersion: 1, minor: 7),
+        .Package(url: "https://github.com/IBM-Swift/Swift-cfenv.git", majorVersion: 4, minor: 0),
+]
+)
+
+NOTES FOR PACKAGE:
+NAME - SHOULD MATCH THE DIRECTORY
+TARGETS - PARTICULAR CODE THAT YOU ARE GOING TO RUN. NOTICE THAT FOODTRUCK SERVER IS DEPENDENT ON THE FOODTRUCKAPI LIBRARY.
+DEPENDENCIES - KITURA IS OUR WEB FRAMEWORK (LIBRARY), COUCHDB IS OUR DATABASE, AND CFENV IS OUR CLOUD FOUNDRY ENVIRONMENT (WHICH ALLOWS OUR SERVER TO COMMUNICATE WITH BLUEMIX LATER). NOTICE ALSO THAT KITURA-COUCHDB INCLUDES HELIUM LOGGER AND SWIFTY JSON.
+
+CREATE A MAIN.SWIFT FOR THE SERVER
+This is what differentiates a framework from an executable. The executable must have a main.swift in the module.
+
+Tims-Macbook-Pro-2:Sources timbeals$ cd FoodTruckServer/
+Tims-Macbook-Pro-2:FoodTruckServer timbeals$ touch main.swift
+
+
+
+BUILD THE PROJECT FROM THE ROOT DIRECTORY
+
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ swift build
+...
+
+Compile Swift Module 'FoodTruckAPI' (1 sources)
+Compile Swift Module 'FoodTruckServer' (1 sources)
+Linking ./.build/debug/FoodTruckServer
+
+This will download all of your dependencies and put them into a newly created packages directory. Notice that at the end of the download log you get the confirmation that your FoodTruckAPI and FoodTruckServer are in seperate modules. Notice as well that the execute command is ./.build/debug/FoodTruckServer the directory where you created your main.swift
+
+3. CREATE A SWIFT VERSION FILE
+
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ nano .swift-version
+
+This is created in the root directory and includes only one line: 3.1.1. This is the swift version indicated by kitura.
+
+
+CLOUD FOUNDRY IGNORE
+
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ nano .cfignore
+
+.DS_Store = This is something that mac puts in the file system.
+.build/* = We will do the build in bluemix so this is not needed
+Packages/* = It will grab all of the packages so we don't need to send them up.
+*.xcodeproj/* = xcode files are for local use only
+*.xcworkspace/* = xcode files are for local use only
+couchdb.stdout = These couch db files may be created to test our project locally.
+couchdb.stderr = These couch db files may be created to test our project locally.
+
+GIT IGNORE
+
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ nano .gitignore
+
+.DS_Store
+/.build
+/Packages
+/*.xcodeproj
+/*.xcworkspace
+
+4. DOCKER COMPOSE
+Usually you will have several containers for other services like a database, web service, background tasks, etc. For this we use the docker-compose.yml.
+
+db:
+  images: klaemo/couchdb:2.0.0
+  ports:
+    - "5984:5984"
+  environment:
+    - COUCHDB_USER=Tim
+    - COUCHDB_PASSWORD=123456
+
+app:
+  image: ibmcom/swift-ubuntu
+  ports:
+    - "8080:8080"
+  volumes:
+    - .:/root/FoodTruckAPI
+  command: bash -c "cd /root/FoodTruckAPI && swift package clean && swift build --configuration release && ./.build/release/FoodTruckServer"
+  links:
+    - db:localhost
+
+What's going on here?
+
+We have two containers being built. One is for db and the other is for app. We specify the image that is being used to build each container and then add any additional settings.
+
+db:
+image: In the image we have to specify which version we want to use with couchdb. The image has a couple of version options and you can check them out at hub.docker.
+ports: We are exposing the container port 5984 to the same port on our local machine
+volumes: Mounts the project directory on the host to the /root/FoodTruckAPI of the container.
+links: links the app to the db. This means that we can perform the executable on the app and it will load up the db. When we refer to localhost inside the app it will be referring to the db.
+A Debug configuration supports the debugging of an app, and a Release configuration builds a version of the app that can be deployed.
+
+5. CREATE A MANIFEST FILE FOR BLUEMIX
+This specifies how your local machine will
+
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ nano manifest.yml
+
+applications:
+- path: .
+  memory: 256M
+  instances: 1
+  domain: mybluemix.net
+  name: FoodTruckAPI Server
+  host: FoodTruckAPI-Server
+  disk_quota: 1024M
+  buildpack: swift_buildpack
+  command: FoodTruckServer
+
+The 'command: FoodTruckServer' has come from the docker-compose file.
+
+
+6. CREATE XCODE PROJECT
+
+CREATE XCODEPROJ FILE
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ swift package generate-xcodeproj
+
+OPEN IT
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ open FoodTruckAPI.xcodeproj
+
+notice that the two modules that you made (Server and API) are both in the list of sources.
+Switch your scheme to FoodTruckServer (remember that this is where you made the main.swift) and build.
+
+
+
