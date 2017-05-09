@@ -20,3 +20,15 @@ do {
     Log.info("Could not init with CF Environment. Proceed with defaults")
     trucks = FoodTruck()
 }
+
+let controller = FoodTruckController(backend: trucks)
+
+do {
+    let port = try CloudFoundryEnv.getAppEnv.port
+    Log.verbose("Assigned to port: \(port)")
+    
+    Kitura.addHTTPServer(onPort: port, with: controller.router)
+    Kitura.run
+} catch {
+    Log.error("Server failed to start.")
+}
