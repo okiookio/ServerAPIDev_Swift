@@ -24,7 +24,7 @@ public enum APICollectionError: Error {
     case AuthError
 }
 
-//If we are unable to get our app config from the CFEnv are going to provide some defaults so that we can run on our local host.
+//If we are unable to get our app config from the CFEnv we are going to provide some defaults so that we can run on our local host.
 //These properties can then be put into the CouchDB struct ConnectionProperties note that the username and password inputs are optional.
 // secured - We are testing if the API is running on the localhost (default) then it is unsecured otherwise it is running on bluemix and is secured.
 //The convenience is an extra initializer. The first is the default initializer. Note that in main.swift (if there is no service)we call the default initializer with no input parameters. This means that it is initialized with the default parameters we have entered.

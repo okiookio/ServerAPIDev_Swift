@@ -3,10 +3,12 @@ import Kitura
 import HeliumLogger
 import LoggerAPI
 import CloudFoundryEnv
+//import Configuration
 import FoodTruckAPI
 
 HeliumLogger.use()
 
+//FoodTruck is the back-end class that implemens the protocol methods for dealing with couchDB
 let trucks: FoodTruck
 
 //Initialization will be attempted using CF Environment for bluemix and if that doesn't succeed then we will initialize locally. Notice the two different init methods being called.
@@ -23,12 +25,31 @@ do {
 
 let controller = FoodTruckController(backend: trucks)
 
+//CFENV V 4. LATEST
+//let configManager = ConfigurationManager()
+//
+//if let port = configManager.getApp()?.port {
+//    let port = try CloudFoundryEnv.getAppEnv.port
+//    Log.verbose("Assigned to port: \(port)")
+//
+//    Kitura.addHTTPServer(onPort: port, with: controller.router)
+//    Kitura.run()
+//
+//} else {
+//    Log.error("Server failed to start")
+//}
+
+
+//CloudFoundry gets the app environment from bluemix. However, because it is not connected during development, it will set defaults. For example it will set port to 8080.
+
 do {
-    let port = try CloudFoundryEnv.getAppEnv.port
-    Log.verbose("Assigned to port: \(port)")
-    
+    let port = try CloudFoundryEnv.getAppEnv().port
+    Log.verbose("Assigned port \(port)")
+
     Kitura.addHTTPServer(onPort: port, with: controller.router)
-    Kitura.run
+    Kitura.run()
+
 } catch {
-    Log.error("Server failed to start.")
+    Log.error("Server failed to start")
 }
+
