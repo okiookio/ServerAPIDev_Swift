@@ -199,7 +199,52 @@ public class FoodTruckDB: FoodTruckAPI {
     
     //Tear down method
     public func clearAll(completion: @escaping(Error?) -> Void) {
+        let couchClient = CouchDBClient(connectionProperties: connectionProps)
+        let database = couchClient.database(dbName)
         
+        database.queryByView("all_documents", ofDesign: designName, usingParameters: [.descending(true), .includeDocs(true)]) { (doc: JSON?, error: NSError?) in
+            
+            
+            guard let doc = doc else {
+                completion(error)
+                return
+            }
+
+            guard let idAndRevs = try? self.getIdAndRev(doc) else {
+                completion(error)
+                return
+            }
+            
+            if idAndRevs.count == 0 {
+                completion(nil)
+            } else {
+                for idAndRev in idAndRevs {
+                    database.delete(idAndRev.0, rev: idAndRev.1, callback: { (error: NSError?) in
+                        guard error == nil else {
+                            Log.error("Deletion error")
+                            completion(error)
+                            return
+                        }
+                    })
+                }
+                completion(nil)
+            }
+        }
+    }
+    
+    //this method returns an array of tuples.
+    private func getIdAndRev(_ document: JSON) throws -> [(String, String)] {
+        guard let rows = document["rows"].array else {
+            throw APICollectionError.ParseError
+        }
+        
+        return rows.flatMap {
+            let doc = $0["value"]
+            let id = doc["_id"].stringValue
+            let rev = doc["_rev"].stringValue
+            
+            return (id, rev)
+        }
     }
     
     //Delete one specific food truck
