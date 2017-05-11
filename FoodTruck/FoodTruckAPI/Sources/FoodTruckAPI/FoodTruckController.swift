@@ -34,8 +34,12 @@ public final class FoodTruckController {
       
         //get all trucks
         router.get(trucksPath, handler: getTrucks)
+        //get one truck by id
+        router.get("\(trucksPath)/:id", handler: getTruckById)
+        
         //add one truck
         router.post(trucksPath, handler: addTruck)
+        
     
     }
     
@@ -119,5 +123,44 @@ public final class FoodTruckController {
                 Log.error("Communications error")
             }
         }
+    }
+    
+    private func getTruckById(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+        guard let id = request.parameters["id"] else {
+            response.status(.badRequest)
+            Log.error("No id supplied")
+            return
+        }
+        
+        foodTruckDB.getTruck(docId: id) { (foodTruckItem: FoodTruckItem?, error:Error?) in
+            do {
+                
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+
+                
+                guard let foodTruckItem = foodTruckItem else {
+                    try response.status(.notFound).end()
+                    Log.error("Could not find item with provided id")
+                    return
+                }
+                
+                let result = JSON(foodTruckItem.toDict())
+                
+                do {
+                    try response.status(.OK).send(json: result).end()
+                } catch {
+                    Log.error("Error sending response")
+                }
+                
+            } catch {
+                Log.error("Communications error")
+            }
+        }
+        
     }
 }

@@ -147,6 +147,28 @@ public class FoodTruckDB: FoodTruckAPI {
     //Get one specific truck
     public func getTruck(docId: String, completion: @escaping(FoodTruckItem?, Error?) -> Void) {
         
+        let couchClient = CouchDBClient(connectionProperties: connectionProps)
+        let database = couchClient.database(dbName)
+        
+        database.retrieve(docId) { (doc:JSON?, error: NSError?) in
+
+            guard let doc = doc,
+                let docId = doc["id"].string,
+                let name = doc["name"].string,
+                let foodType = doc["foodtype"].string,
+                let avgCost = doc["avgcost"].float,
+                let latitude = doc["latitude"].float,
+                let longitude = doc["longitude"].float
+                else {
+                    completion(nil, error)
+                    return
+            }
+            
+            let foodTruckItem = FoodTruckItem(docId: docId, name: name, foodType: foodType, avgCost: avgCost, latitude: latitude, longitude: longitude)
+            completion(foodTruckItem, nil)
+        }
+        
+        
     }
     
     //Create a food truck
