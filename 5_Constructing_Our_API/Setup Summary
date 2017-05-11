@@ -29,3 +29,15 @@ The FoodTruckDB class also includes the methods for database requests and instan
 
 Once the backend 'FoodTruckDB' is setup, we create a controller 'FoodTruckController'. This will handle the user requests, sets up the routes and calls the request methods found in 'FoodTruckDB'.
 
+****
+
+Making requests:
+
+AddTruck:
+The user provides a request of typeRouter request through the method in the controller. It contains a json in the body with the necessary information to create a foodtruck item. We check that the information provided is sufficient, pull it out as strings and floats and then call the API protocol method in the foodtruckDB class.
+
+That method then takes the variables provided, creates a new json object and passes it to the couchDB. Provided the document is successfully created in the database, it instantiates the foodTruckItem and provides it back to the user in a completion block.
+
+
+
+

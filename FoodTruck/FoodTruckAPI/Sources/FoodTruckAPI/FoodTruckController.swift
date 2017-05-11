@@ -92,7 +92,32 @@ public final class FoodTruckController {
         }
         
         foodTruckDB.addFoodTruck(name: name, foodType: foodType, avgCost: avgCost, latitude: latitude, longitude: longitude) { (foodTruckItem: FoodTruckItem?, error: Error?) in
-            //
+            
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+                
+                guard let foodTruckItem = foodTruckItem else {
+                    try response.status(.internalServerError).end()
+                    Log.error("Truck not found")
+                    return
+                }
+                
+                let result = JSON(foodTruckItem.toDict())
+                Log.info("\(name) added to vehicles")
+                
+                do {
+                    try response.status(.OK).send(json: result).end()
+                } catch {
+                    Log.error("Error sending response")
+                }
+                
+            } catch {
+                Log.error("Communications error")
+            }
         }
     }
 }
