@@ -1,0 +1,31 @@
+
+
+5.35 IF XCODE CAN'T SEE A MODULE OR METHOD WITHIN A MODULE....
+This happens sometimes. Try going to your terminal and remove:
+
+.xcodeproj
+Packages
+.build
+
+with the command: rm -rf (name of file or directory...)
+
+and then build again with: swift build
+
+swift package generate-xcodeproj
+
+open ####.xcodeproj
+
+
+A SUMMARY OF THE DATABASE SETUP:
+
+Main:
+The program attempts to get 'service' from the Cloud Foundry AppEnvironment (through cfenv). If this succeeds, the backend 'FoodTruckDB' is created with a convenience initializer using the service. Either the environment exists and the service is provided by bluemix, or it doesn't and cfenv provides some logical defaults. The service includes host, port, username and password. If both of these steps fail, then we can initialize the 'FoodTruckDB' with some default that we have set as static properties.
+
+The initializer includes a setupDB function which either gets the existing couchDB database or creates it if it doesn't already exist. There is also some setup of the database design and views.
+
+The FoodTruckDB class also includes the methods for database requests and instantiates the object models (eg: FoodTruckItem) from the json that is returned.
+
+****
+
+Once the backend 'FoodTruckDB' is setup, we create a controller 'FoodTruckController'. This will handle the user requests, sets up the routes and calls the request methods found in 'FoodTruckDB'.
+

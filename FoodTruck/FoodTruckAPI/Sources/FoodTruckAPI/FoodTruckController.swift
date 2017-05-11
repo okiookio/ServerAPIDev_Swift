@@ -20,18 +20,79 @@ import SwiftyJSON
 
 public final class FoodTruckController {
     
-    public let trucks: FoodTruckAPI
+    public let foodTruckDB: FoodTruckAPI
     public let router = Router()
     public let trucksPath = "api/v1/trucks"
     
     public init(backend: FoodTruckAPI) {
-        self.trucks = backend
+        self.foodTruckDB = backend
         routeSetup()
     }
     
     public func routeSetup() {
         router.all("/*", middleware: BodyParser())
+      
+        //get all trucks
+        router.get(trucksPath, handler: getTrucks)
+        //add one truck
+        router.post(trucksPath, handler: addTruck)
+    
+    }
+    
+    private func getTrucks(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        foodTruckDB.getAllTrucks { (trucks: [FoodTruckItem]?, error: Error?) in
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+                
+                guard let trucks = trucks else {
+                    try response.status(.internalServerError).end()
+                    Log.error("failed to get trucks")
+                    return
+                }
+                
+                let json = JSON(trucks.toDict())
+                try response.status(.OK).send(json: json).end()
+            } catch {
+                Log.error("Communication error")
+            }
+        }
     }
     
     
+    //the truck will be in the request body
+    private func addTruck(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        guard let body = request.body else {
+            response.status(.badRequest)
+            Log.error("No body in request")
+            return
+        }
+        
+        //kitura parsed body enum checks the body type is json
+        guard case let .json(json) = body else {
+            response.status(.badRequest)
+            Log.error("invalid json supplied in body")
+            return
+        }
+        
+        //provided the json is legitimate, we can pull values out of the document
+        let name: String = json["name"].stringValue
+        let foodType: String = json["foodtype"].stringValue
+        let avgCost: Float = json["avgcost"].floatValue
+        let latitude: Float = json["latitude"].floatValue
+        let longitude: Float = json["longitude"].floatValue
+        
+        guard name != "" else {
+            response.status(.badRequest)
+            Log.error("necessary json field not supplied")
+            return
+        }
+        
+        foodTruckDB.addFoodTruck(name: name, foodType: foodType, avgCost: avgCost, latitude: latitude, longitude: longitude) { (foodTruckItem: FoodTruckItem?, error: Error?) in
+            //
+        }
+    }
 }

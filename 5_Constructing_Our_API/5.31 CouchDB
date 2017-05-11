@@ -121,6 +121,8 @@ returns:
 
 Notice that the value: 2 is the number of person types we have created.
 
+a note about 'Revision': You will notice that every time you save a document to the database you get back an id and a revision. The revision is the version of the object. When you update an object the database actually creates a new document that has the same id as the previous but a new revision number. This means that every version of the document remains in the database.
+
 
 
 

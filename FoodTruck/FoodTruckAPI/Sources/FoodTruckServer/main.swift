@@ -9,7 +9,7 @@ import FoodTruckAPI
 HeliumLogger.use()
 
 //FoodTruck is the back-end class that implemens the protocol methods for dealing with couchDB
-let trucks: FoodTruck
+let foodTruckDB: FoodTruckDB
 
 //Initialization will be attempted using CF Environment for bluemix and if that doesn't succeed then we will initialize locally. Notice the two different init methods being called.
 
@@ -17,13 +17,13 @@ do {
     Log.info("Attempting init with CF Environment")
     let service = try getConfig()
     Log.info("Init with service")
-    trucks = FoodTruck(service: service)
+    foodTruckDB = FoodTruckDB(service: service)
 } catch {
     Log.info("Could not init with CF Environment. Proceed with defaults")
-    trucks = FoodTruck()
+    foodTruckDB = FoodTruckDB()
 }
 
-let controller = FoodTruckController(backend: trucks)
+let controller = FoodTruckController(backend: foodTruckDB)
 
 //CFENV V 4. LATEST
 //let configManager = ConfigurationManager()
