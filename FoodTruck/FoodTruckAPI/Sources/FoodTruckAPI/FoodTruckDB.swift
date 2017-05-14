@@ -197,7 +197,7 @@ public class FoodTruckDB: FoodTruckAPI {
         
     }
     
-    //Tear down method
+    //Tear down method for testing only. No route available in controller
     public func clearAll(completion: @escaping(Error?) -> Void) {
         let couchClient = CouchDBClient(connectionProperties: connectionProps)
         let database = couchClient.database(dbName)
@@ -250,6 +250,26 @@ public class FoodTruckDB: FoodTruckAPI {
     //Delete one specific food truck
     public func deleteTruck(docId: String, completion: @escaping(Error?) -> Void) {
         
+        let couchClient = CouchDBClient(connectionProperties: connectionProps)
+        let database = couchClient.database(dbName)
+        
+        database.retrieve(docId) { (doc: JSON?, error: NSError?) in
+            guard let doc = doc, error == nil else {
+                completion(error)
+                return
+            }
+            
+            //TODO: fetch all reviews for the truck
+            
+            let rev = doc["_rev"].stringValue
+            database.delete(docId, rev: rev, callback: { (error:NSError?) in
+                if error == nil {
+                    completion(nil)
+                } else {
+                    completion(error)
+                }
+            })
+        }
     }
 
     func parseTrucks(_ document: JSON) throws -> [FoodTruckItem] {

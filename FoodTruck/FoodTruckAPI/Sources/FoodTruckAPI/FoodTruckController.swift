@@ -40,6 +40,9 @@ public final class FoodTruckController {
         //add one truck
         router.post(trucksPath, handler: addTruck)
         
+        //delete one truck
+        router.delete("\(trucksPath)/:id", handler: deleteTruckById)
+        
     
     }
     
@@ -161,6 +164,28 @@ public final class FoodTruckController {
                 Log.error("Communications error")
             }
         }
-        
+    }
+    
+    private func deleteTruckById(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        guard let id = request.parameters["id"] else {
+            response.status(.badRequest)
+            Log.error("No id supplied")
+            return
+        }
+
+        foodTruckDB.deleteTruck(docId: id) { (error: Error?) in
+           
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+                try response.status(.OK).end()
+                Log.info("\(id) was successfully deleted")
+            } catch {
+                Log.error("Communication error")
+            }
+        }
     }
 }
