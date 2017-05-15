@@ -20,6 +20,8 @@ class FoodTruckAPITests: XCTestCase {
     }
     
     //Add and get specific truck
+    //Note that we are using the expectation because we are doing networking calls. The waitForExpectation call is saying that the system will wait three seconds for the requests to complete and execute the .fulfill command. If it is not called within this timeframe the assertNil is called which fails the test.
+
     func testAddAndGetTruck() {
         
         guard let foodTruckDB = foodTruckDB else {
@@ -38,6 +40,9 @@ class FoodTruckAPITests: XCTestCase {
             
             if let addedTruck = addedTruck {
 
+                //XCTAssertEqual(addedTruck.name, "test add")
+                //addExpectation.fulfill()
+                
                 foodTruckDB.getTruck(docId: addedTruck.docId, completion: { (returnedTruck:FoodTruckItem?, error:Error?) in
                     
                     //assert that the added truck and returned truck are the same. Note that this uses the equatable extension method defined in FoodTruckItem
@@ -47,10 +52,13 @@ class FoodTruckAPITests: XCTestCase {
                 })
             }
         }
-        waitForExpectations(timeout: 3) { (error) in
+        waitForExpectations(timeout: 5) { (error) in
             XCTAssertNil(error, "Add Truck timed out")
         }
     }
+    
+    
+    //docker run --name couch2 -p 5984:5984 -e COUCHDB_USER=TIM COUCHDB_PASSWORD=1234567 klaemo/couchdb:2.0.0
     
     
     

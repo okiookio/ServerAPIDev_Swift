@@ -34,7 +34,7 @@ public class FoodTruckDB: FoodTruckAPI {
     static let defaultDBHost = "localhost"
     static let defaultDBPort = Int16(5984)
     static let defaultDBName = "foodtruckapi"
-    static let defaultDBUsername = "Tim"
+    static let defaultDBUsername = "tim"
     static let defaultDBPassword = "123456"
     
     let dbName: String
@@ -153,7 +153,7 @@ public class FoodTruckDB: FoodTruckAPI {
         database.retrieve(docId) { (doc:JSON?, error: NSError?) in
 
             guard let doc = doc,
-                let docId = doc["id"].string,
+                let docId = doc["_id"].string,
                 let name = doc["name"].string,
                 let foodType = doc["foodtype"].string,
                 let avgCost = doc["avgcost"].float,
@@ -293,5 +293,73 @@ public class FoodTruckDB: FoodTruckAPI {
             return FoodTruckItem(docId: id, name: name, foodType: foodType, avgCost: avgCost, latitude: latitude, longitude: longitude)
         }
         return trucks
+    }
+    
+    
+    //update single foodtruck
+    public func updateFoodTruck(docId: String, name: String?, foodtype: String?, avgcost: Float?, latitude: Float?, longitude: Float?, completion: @escaping (FoodTruckItem?, Error?) -> Void) {
+        
+        let couchClient = CouchDBClient(connectionProperties: connectionProps)
+        let database = couchClient.database(dbName)
+        
+        database.retrieve(docId) { (doc:JSON?, error:NSError?) in
+            
+            guard let doc = doc else {
+                completion(nil, APICollectionError.AuthError)
+                return
+            }
+            
+            guard let revision = doc["_rev"].string else {
+                completion(nil, APICollectionError.ParseError)
+                return
+            }
+            
+            let type = "foodtruck"
+            let name = name ?? doc["name"].stringValue
+            let foodtype = foodtype ?? doc["foodtype"].stringValue
+            let avgcost = avgcost ?? doc["avgcost"].floatValue
+            let latitude = latitude ?? doc["latitude"].floatValue
+            let longitude = longitude ?? doc["longitude"].floatValue
+            
+            let json: [String: Any] = [
+                "type": type,
+                "name": name,
+                "foodtype": foodtype,
+                "avgcost": avgcost,
+                "latitude": latitude,
+                "longitude": longitude
+            ]
+            
+            database.update(docId, rev: revision, document: JSON(json), callback: { (rev:String?, doc:JSON?, err:NSError?) in
+                
+                guard err == nil else {
+                    completion(nil, err)
+                    return
+                }
+                
+                
+                let updatedTruck = FoodTruckItem(docId: docId, name: name, foodType: foodtype, avgCost: avgcost, latitude: latitude, longitude: longitude)
+                
+                completion(updatedTruck, nil)
+            })
+        }
+    }
+    
+    public func getCountTrucks(completion: @escaping (Int?, Error?) -> Void) {
+        let couchClient = CouchDBClient(connectionProperties: connectionProps)
+        let database = couchClient.database(dbName)
+        
+        database.queryByView("total_trucks", ofDesign: self.designName, usingParameters: []) { (doc:JSON?, err:NSError?) in
+            
+            if let doc = doc, err == nil {
+                if let count = doc["rows"][0]["value"].int {
+                    completion(count, nil)
+                } else {
+                    completion(0, nil)
+                }
+            } else {
+                completion(nil, err)
+            }
+        }
     }
 }
