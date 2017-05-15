@@ -204,7 +204,6 @@ public class FoodTruckDB: FoodTruckAPI {
         
         database.queryByView("all_documents", ofDesign: designName, usingParameters: [.descending(true), .includeDocs(true)]) { (doc: JSON?, error: NSError?) in
             
-            
             guard let doc = doc else {
                 completion(error)
                 return
@@ -239,7 +238,7 @@ public class FoodTruckDB: FoodTruckAPI {
         }
         
         return rows.flatMap {
-            let doc = $0["value"]
+            let doc = $0["doc"]
             let id = doc["_id"].stringValue
             let rev = doc["_rev"].stringValue
             
@@ -345,7 +344,7 @@ public class FoodTruckDB: FoodTruckAPI {
         }
     }
     
-    public func getCountTrucks(completion: @escaping (Int?, Error?) -> Void) {
+    public func getTruckCount(completion: @escaping (Int?, Error?) -> Void) {
         let couchClient = CouchDBClient(connectionProperties: connectionProps)
         let database = couchClient.database(dbName)
         

@@ -9,6 +9,7 @@ class FoodTruckAPITests: XCTestCase {
             ("testUpdateTruck", testUpdateTruck),
             ("testClearAll", testClearAll),
             ("testDeleteTruck", testDeleteTruck),
+            ("testGetTruckCount", testGetTruckCount),
         ]
     }
     
@@ -126,6 +127,13 @@ class FoodTruckAPITests: XCTestCase {
         }
         
         let clearExpectation = expectation(description: "clear all db documents")
+        
+        foodTruckDB.addFoodTruck(name: "test value", foodType: "test value", avgCost: 0, latitude: 0, longitude: 0) { (foodTruck:FoodTruckItem?, error:Error?) in
+            guard error == nil else {
+                XCTFail()
+                return
+            }
+        }
 
         foodTruckDB.clearAll { (error:Error?) in
             guard error == nil else {
@@ -134,7 +142,7 @@ class FoodTruckAPITests: XCTestCase {
             }
         }
         
-        foodTruckDB.getCountTrucks { (count:Int?, error:Error?) in
+        foodTruckDB.getTruckCount { (count:Int?, error:Error?) in
             guard error == nil else {
                 XCTFail()
                 return
@@ -179,7 +187,7 @@ class FoodTruckAPITests: XCTestCase {
                     }
                 })
                 //count trucks to assert zero
-                foodTruckDB.getCountTrucks(completion: { (count:Int?, error:Error?) in
+                foodTruckDB.getTruckCount(completion: { (count:Int?, error:Error?) in
                     
                     guard error == nil else {
                         XCTFail()
@@ -196,5 +204,35 @@ class FoodTruckAPITests: XCTestCase {
         }
     }
 
+    func testGetTruckCount() {
+        guard let foodTruckDB = foodTruckDB else {
+            XCTFail()
+            return
+        }
+
+        
+        let countExpectation = expectation(description: "Truck count expectation")
     
+        for _ in 0..<5 {
+            foodTruckDB.addFoodTruck(name: "test value", foodType: "test value", avgCost: 0, latitude: 0, longitude: 0, completion: { (truck, err) in
+                guard err == nil else {
+                    XCTFail()
+                    return
+                }
+            })
+        }
+        
+        foodTruckDB.getTruckCount { (count:Int?, error:Error?) in
+            guard error == nil else {
+                XCTFail()
+                return
+            }
+            //count should be equal to five
+            XCTAssertEqual(count, 5)
+            countExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 5) { (error:Error?) in
+            XCTAssertNil(error, "Get truck count timed out")
+        }
+    }
 }

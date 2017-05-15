@@ -34,6 +34,10 @@ public final class FoodTruckController {
       
         //get all trucks
         router.get(trucksPath, handler: getTrucks)
+        
+        //get truck count
+        router.get("\(trucksPath)/count", handler: getTrucksCount)
+
         //get one truck by id
         router.get("\(trucksPath)/:id", handler: getTruckById)
         
@@ -45,11 +49,6 @@ public final class FoodTruckController {
         
         //update one truck
         router.put("\(trucksPath)/:id", handler: updateTruckById)
-        
-        //get truck count
-        router.get("\(trucksPath)/count", handler: getTrucksCount)
-        
-    
     }
     
     private func getTrucks(request: RouterRequest, response: RouterResponse, next: () -> Void) {
@@ -245,7 +244,7 @@ public final class FoodTruckController {
     
     private func getTrucksCount(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         
-        foodTruckDB.getCountTrucks { (count:Int?, error:Error?) in
+        foodTruckDB.getTruckCount { (count:Int?, error:Error?) in
             
             do {
                 

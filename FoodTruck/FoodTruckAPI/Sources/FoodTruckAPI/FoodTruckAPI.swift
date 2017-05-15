@@ -26,5 +26,5 @@ public protocol FoodTruckAPI {
     func updateFoodTruck(docId: String, name: String?, foodtype: String?, avgcost: Float?, latitude: Float?, longitude: Float?, completion: @escaping(FoodTruckItem?, Error?) -> Void)
     
     //Get count of all foodtrucks
-    func getCountTrucks(completion: @escaping(Int?, Error?) -> Void)    
+    func getTruckCount(completion: @escaping(Int?, Error?) -> Void)
 }
