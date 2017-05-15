@@ -7,7 +7,8 @@ class FoodTruckAPITests: XCTestCase {
         return [
             ("testAddTruck", testAddAndGetTruck),
             ("testUpdateTruck", testUpdateTruck),
-            
+            ("testClearAll", testClearAll),
+            ("testDeleteTruck", testDeleteTruck),
         ]
     }
     
@@ -117,5 +118,83 @@ class FoodTruckAPITests: XCTestCase {
         }
     }
     
+    func testClearAll() {
+        
+        guard let foodTruckDB = foodTruckDB else {
+            XCTFail()
+            return
+        }
+        
+        let clearExpectation = expectation(description: "clear all db documents")
+
+        foodTruckDB.clearAll { (error:Error?) in
+            guard error == nil else {
+                XCTFail()
+                return
+            }
+        }
+        
+        foodTruckDB.getCountTrucks { (count:Int?, error:Error?) in
+            guard error == nil else {
+                XCTFail()
+                return
+            }
+            
+            //TO DO: get count of reviews.
+            
+            XCTAssertEqual(count, 0)
+            clearExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5) { (error:Error?) in
+            XCTAssertNil(error, "clear all timed out")
+        }
+    }
+    
+    func testDeleteTruck() {
+        
+        guard let foodTruckDB = foodTruckDB else {
+            XCTFail()
+            return
+        }
+
+        let deleteExpectation = expectation(description: "delete a specific truck")
+        
+        foodTruckDB.addFoodTruck(name: "test delete", foodType: "test delete", avgCost: 0, latitude: 0, longitude: 0) { (addedTruck:FoodTruckItem?, error:Error?) in
+            
+            guard error == nil else {
+                XCTFail()
+                return
+            }
+
+            if let addedTruck = addedTruck {
+                
+                //TO DO: Add a review
+                
+                foodTruckDB.deleteTruck(docId: addedTruck.docId, completion: { (error:Error?) in
+                    
+                    guard error == nil else {
+                        XCTFail()
+                        return
+                    }
+                })
+                //count trucks to assert zero
+                foodTruckDB.getCountTrucks(completion: { (count:Int?, error:Error?) in
+                    
+                    guard error == nil else {
+                        XCTFail()
+                        return
+                    }
+                    
+                    XCTAssertEqual(count, 0)
+                    deleteExpectation.fulfill()
+                })
+            }
+        }
+        waitForExpectations(timeout: 5) { (error:Error?) in
+            XCTAssertNil(error, "test delete timed out")
+        }
+    }
+
     
 }
