@@ -1,0 +1,51 @@
+TEST ON LINUX
+
+It is importatnt to check that our API tests work on a Linux system.
+
+First, stop xcode and docker containers running.
+
+COPY YOUR DOCKER COMPOSE FILE TO MAKE A DOCKER TEST FILE.
+
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ cp docker-compose.yml docker-test.yml
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ nano docker-test.yml
+
+db:
+  image: couchdb
+  ports:
+    - "5984:5984"
+  environment:
+    - COUCHDB_USER=tim
+    - COUCHDB_PASSWORD=123456
+
+app:
+  image: ibmcom/swift-ubuntu
+  ports:
+    - "8080:8080"
+  volumes:
+    - .:/root/FoodTruckAPI
+  command: bash -c "cd /root/FoodTruckAPI && swift package clean && swift build && swift test"
+  links:
+    - db:localhost
+
+The salient changes are:
+image: is now couchdb which is a more stripped back image
+command: is now the default test build instead of the release. It also includes the command swift test which will execute the test code that you have written
+
+RUN THE TESTS ON LINUX
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ docker-compose -f docker-test.yml up
+
+... toward the end of the returned script you see...
+
+app_1  | Test Case 'FoodTruckAPITests.testGetTruckCount' passed (0.289 seconds)
+app_1  | Test Suite 'FoodTruckAPITests' passed at 20:33:19.589
+app_1  |     Executed 5 tests, with 0 failures (0 unexpected) in 1.385 (1.385) seconds
+app_1  | Test Suite 'debug.xctest' passed at 20:33:19.590
+app_1  |     Executed 5 tests, with 0 failures (0 unexpected) in 1.385 (1.385) seconds
+app_1  | Test Suite 'All tests' passed at 20:33:19.591
+app_1  |     Executed 5 tests, with 0 failures (0 unexpected) in 1.385 (1.385) seconds
+foodtruckapi_app_1 exited with code 0
+
+This means that everything worked. If anything fails you can check the error messages for the file names and lines.
+
+CONTROL C will get you back to the command line.
+
