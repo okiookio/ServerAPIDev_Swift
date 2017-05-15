@@ -268,7 +268,5 @@ public final class FoodTruckController {
             }
             
         }
-        
-        
     }
 }

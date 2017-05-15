@@ -6,6 +6,7 @@ class FoodTruckAPITests: XCTestCase {
     static var allTests : [(String, (FoodTruckAPITests) -> () throws -> Void)] {
         return [
             ("testAddTruck", testAddAndGetTruck),
+            ("testUpdateTruck", testUpdateTruck),
             
         ]
     }
@@ -17,6 +18,18 @@ class FoodTruckAPITests: XCTestCase {
         foodTruckDB = FoodTruckDB()
         super.setUp()
         
+    }
+    
+    override func tearDown() {
+        guard let foodtruckDB = foodTruckDB else {
+            return
+        }
+
+        foodtruckDB.clearAll { (error:Error?) in
+            guard error == nil else {
+                return
+            }
+        }
     }
     
     //Add and get specific truck
@@ -60,7 +73,49 @@ class FoodTruckAPITests: XCTestCase {
     
     //docker run --name couch2 -p 5984:5984 -e COUCHDB_USER=TIM COUCHDB_PASSWORD=1234567 klaemo/couchdb:2.0.0
     
-    
+    func testUpdateTruck() {
+        
+        guard let foodTruckDB = foodTruckDB else {
+            XCTFail()
+            return
+        }
+        
+        let updateExpectation = expectation(description: "update truck expectation")
+        
+        //first add a new truck
+        foodTruckDB.addFoodTruck(name: "test update", foodType: "test update", avgCost: 0, latitude: 0, longitude: 0) { (addedTruck:FoodTruckItem?, error:Error?) in
+            guard error == nil else {
+                XCTFail()
+                return
+            }
+            
+            if let addedTruck = addedTruck {
+                
+                let id = addedTruck.docId
+                
+                //now update the added truck
+                foodTruckDB.updateFoodTruck(docId: id, name: "updated name", foodtype: nil, avgcost: 10, latitude: nil, longitude: nil, completion: { (updatedTruck:FoodTruckItem?, error:Error?) in
+                    
+                    guard error == nil else {
+                        XCTFail()
+                        return
+                    }
+                    
+                    if let updatedTruck = updatedTruck {
+                        
+                        //finally fetch the updated truck and check that it is the same
+                        foodTruckDB.getTruck(docId: updatedTruck.docId, completion: { (fetchedTruck:FoodTruckItem?, error:Error?) in
+                            XCTAssertEqual(updatedTruck, fetchedTruck)
+                            updateExpectation.fulfill()
+                        })
+                    }
+                })
+            }
+        }
+        waitForExpectations(timeout: 5) { (error:Error?) in
+            XCTAssertNil(error, "Update truck timed out")
+        }
+    }
     
     
 }
