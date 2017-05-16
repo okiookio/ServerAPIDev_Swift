@@ -233,7 +233,6 @@ public class FoodTruckDB: FoodTruckAPI {
             }
             
         }
-        
     }
     
     //Tear down method for testing only. No route available in controller
@@ -453,11 +452,72 @@ public class FoodTruckDB: FoodTruckAPI {
     //Add a review for a specific truck
     public func addReview(truckId: String, reviewTitle: String, reviewText: String, reviewStarRating: Int, completion: @escaping(ReviewItem?, Error?) -> Void) {
         
+        let reviewJSON: [String: Any] = [
+            "type": "review",
+            "foodtruckid": truckId,
+            "reviewtitle": reviewTitle,
+            "reviewtext": reviewText,
+            "starrating": reviewStarRating
+        ]
+        
+        let database = getDatabase()
+        database.create(JSON(reviewJSON)) { (id:String?, rev:String?, doc:JSON?, error:NSError?) in
+            guard error != nil else {
+                completion(nil, error)
+                return
+            }
+            
+            if let id = id {
+                let review = ReviewItem(docId: id, foodTruckId: truckId, reviewTitle: reviewTitle, reviewText: reviewText, starRating: reviewStarRating)
+                completion(review, nil)
+            } else {
+                completion(nil, nil)
+            }
+        }
     }
     
     //Update a specific review
     public func updateReview(docId: String, truckId: String?, reviewTitle: String?, reviewText: String?, reviewStarRating: Int?, completion: @escaping(ReviewItem?, Error?) -> Void) {
         
+        let database = getDatabase()
+        
+        //perform retrieve to get existing params and revision number
+        database.retrieve(docId) { (doc:JSON?, error:NSError?) in
+            
+            guard let doc = doc else {
+                completion(nil, APICollectionError.AuthError)
+                return
+            }
+            
+            guard let revision = doc["_rev"].string else {
+                completion(nil, APICollectionError.ParseError)
+                return
+            }
+            
+            let type = "review"
+            let truckid = truckId ?? doc["foodtruckid"].stringValue
+            let reviewtitle = reviewTitle ?? doc["reviewtitle"].stringValue
+            let reviewtext = reviewText ?? doc["reviewtext"].stringValue
+            let starrating = reviewStarRating ?? doc["starrating"].intValue
+            
+            let reviewJSON: [String: Any] = [
+                "type": type,
+                "foodtruckid": truckid,
+                "reviewtitle": reviewtitle,
+                "reviewtext": reviewtext,
+                "starrating": starrating
+            ]
+
+            database.update(docId, rev: revision, document: JSON(reviewJSON), callback: { (revision:String?, doc:JSON?, error: NSError?) in
+                guard error == nil else {
+                    completion(nil, error)
+                    return
+                }
+                
+                let updatedReview = ReviewItem(docId: docId, foodTruckId: truckid, reviewTitle: reviewtitle, reviewText: reviewtext, starRating: starrating)
+                completion(updatedReview, nil)
+            })
+        }
     }
     
     //Delete specific review
