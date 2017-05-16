@@ -430,9 +430,24 @@ public class FoodTruckDB: FoodTruckAPI {
 
         let database = getDatabase()
         
-        
-        
-        
+        database.retrieve(docId) { (doc:JSON?, error:NSError?) in
+            guard let doc = doc else {
+                completion(nil, error)
+                return
+            }
+            
+            guard let docid = doc["_id"].string,
+            let foodtruckid = doc["foodtruckid"].string,
+            let reviewtitle = doc["reviewtitle"].string,
+            let reviewtext = doc["reviewtext"].string,
+                let starrating = doc["starrating"].int else {
+                    completion(nil, error)
+                    return
+            }
+            
+            let review = ReviewItem(docId: docid, foodTruckId: foodtruckid, reviewTitle: reviewtitle, reviewText: reviewtext, starRating: starrating)
+            completion(review, nil)
+        }
     }
     
     //Add a review for a specific truck
