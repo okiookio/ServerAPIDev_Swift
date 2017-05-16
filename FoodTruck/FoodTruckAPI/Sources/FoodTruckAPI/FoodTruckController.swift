@@ -23,6 +23,7 @@ public final class FoodTruckController {
     public let foodTruckDB: FoodTruckAPI
     public let router = Router()
     public let trucksPath = "api/v1/trucks"
+    public let reviewsPath = "api/v1/reviews"
     
     public init(backend: FoodTruckAPI) {
         self.foodTruckDB = backend
@@ -32,6 +33,7 @@ public final class FoodTruckController {
     public func routeSetup() {
         router.all("/*", middleware: BodyParser())
       
+        //MARK: truck methods
         //get all trucks
         router.get(trucksPath, handler: getTrucks)
         
@@ -49,6 +51,34 @@ public final class FoodTruckController {
         
         //update one truck
         router.put("\(trucksPath)/:id", handler: updateTruckById)
+    
+        //MARK: review methods
+        //get all reviews for a specific truck
+        router.get("\(trucksPath)/reviews/:id", handler: getAllReviewsForTruck)
+        
+        //get single specific review
+        router.get("\(reviewsPath)/:id", handler: getReviewById)
+        
+        //add review
+        router.post("\(reviewsPath)/:id", handler: addReviewByTruckId)
+        
+        //update review (put)
+        router.put("\(reviewsPath)/:id", handler: updateReviewById)
+        
+        //delete review
+        router.delete("\(reviewsPath)/:id", handler: deleteReviewById)
+        
+        //reviews count (all)
+        router.get("\(reviewsPath)/count", handler: getReviewsCount)
+        
+        //reviews count (one truck)
+        router.get("\(reviewsPath)/count/:id", handler: getReviewsCountByTruckId)
+        
+        //avg rating (one truck)
+        router.get("\(reviewsPath)/rating/:id", handler: getReviewsAverageByTruckId)
+        
+        
+        
     }
     
     private func getTrucks(request: RouterRequest, response: RouterResponse, next: () -> Void) {
@@ -268,4 +298,41 @@ public final class FoodTruckController {
             
         }
     }
+    
+    //MARK: Reviews Methods
+    
+    private func getAllReviewsForTruck(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+    }
+    
+    private func getReviewById(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+    }
+
+    private func addReviewByTruckId(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+    }
+
+    private func updateReviewById(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+    }
+
+    private func deleteReviewById(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+    }
+    
+    private func getReviewsCount(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+    }
+    
+    
+    private func getReviewsCountByTruckId(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+    }
+    
+    
+    private func getReviewsAverageByTruckId(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+    }
+    
 }
