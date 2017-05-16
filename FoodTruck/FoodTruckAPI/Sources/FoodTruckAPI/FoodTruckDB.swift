@@ -135,13 +135,18 @@ public class FoodTruckDB: FoodTruckAPI {
         }
     }
     
+    //Get db once it has been setup
+    func getDatabase() -> Database {
+        let couchClient = CouchDBClient(connectionProperties: connectionProps)
+        return couchClient.database(dbName)
+    }
+    
     //MARK: FoodTruckAPI Protocol Methods
     
     //Get all trucks
     public func getAllTrucks(completion: @escaping([FoodTruckItem]?, Error?) -> Void) {
         
-        let couchClient = CouchDBClient(connectionProperties: connectionProps)
-        let database = couchClient.database(dbName)
+        let database = getDatabase()
         database.queryByView("all_trucks", ofDesign: self.designName, usingParameters: [.descending(true), .includeDocs(true)]) { (doc: JSON?, error: NSError?) in
             if let doc = doc, error == nil {
                 do {
@@ -183,8 +188,7 @@ public class FoodTruckDB: FoodTruckAPI {
     //Get one specific truck
     public func getTruck(docId: String, completion: @escaping(FoodTruckItem?, Error?) -> Void) {
         
-        let couchClient = CouchDBClient(connectionProperties: connectionProps)
-        let database = couchClient.database(dbName)
+        let database = getDatabase()
         
         database.retrieve(docId) { (doc:JSON?, error: NSError?) in
 
@@ -219,8 +223,7 @@ public class FoodTruckDB: FoodTruckAPI {
             "longitude": longitude
         ]
         
-        let couchClient = CouchDBClient(connectionProperties: connectionProps)
-        let database = couchClient.database(dbName)
+        let database = getDatabase()
         database.create(JSON(truckJSON)) { (id: String?, rev: String?, doc: JSON?, err: NSError?) in
             if let id = id {
                 let foodTruckItem = FoodTruckItem(docId: id, name: name, foodType: foodType, avgCost: avgCost, latitude: latitude, longitude: longitude)
@@ -235,8 +238,7 @@ public class FoodTruckDB: FoodTruckAPI {
     
     //Tear down method for testing only. No route available in controller
     public func clearAll(completion: @escaping(Error?) -> Void) {
-        let couchClient = CouchDBClient(connectionProperties: connectionProps)
-        let database = couchClient.database(dbName)
+        let database = getDatabase()
         
         database.queryByView("all_documents", ofDesign: designName, usingParameters: [.descending(true), .includeDocs(true)]) { (doc: JSON?, error: NSError?) in
             
@@ -285,8 +287,7 @@ public class FoodTruckDB: FoodTruckAPI {
     //Delete one specific food truck
     public func deleteTruck(docId: String, completion: @escaping(Error?) -> Void) {
         
-        let couchClient = CouchDBClient(connectionProperties: connectionProps)
-        let database = couchClient.database(dbName)
+        let database = getDatabase()
         
         database.retrieve(docId) { (doc: JSON?, error: NSError?) in
             guard let doc = doc, error == nil else {
@@ -313,8 +314,7 @@ public class FoodTruckDB: FoodTruckAPI {
     //update single foodtruck
     public func updateFoodTruck(docId: String, name: String?, foodtype: String?, avgcost: Float?, latitude: Float?, longitude: Float?, completion: @escaping (FoodTruckItem?, Error?) -> Void) {
         
-        let couchClient = CouchDBClient(connectionProperties: connectionProps)
-        let database = couchClient.database(dbName)
+        let database = getDatabase()
         
         database.retrieve(docId) { (doc:JSON?, error:NSError?) in
             
@@ -360,8 +360,7 @@ public class FoodTruckDB: FoodTruckAPI {
     }
     
     public func getTruckCount(completion: @escaping (Int?, Error?) -> Void) {
-        let couchClient = CouchDBClient(connectionProperties: connectionProps)
-        let database = couchClient.database(dbName)
+        let database = getDatabase()
         
         database.queryByView("total_trucks", ofDesign: self.designName, usingParameters: []) { (doc:JSON?, err:NSError?) in
             
@@ -383,8 +382,7 @@ public class FoodTruckDB: FoodTruckAPI {
     //Note that we need the .keys parameter. The view declaration shows the [key: value] as [truckId: [params]] so we need to pass our truckId into the query to only return the reviews for the one truck.
     
     public func getReviews(truckId: String, completion: @escaping([ReviewItem]?, Error?) -> Void) {
-        let couchClient = CouchDBClient(connectionProperties: connectionProps)
-        let database = couchClient.database(dbName)
+        let database = getDatabase()
         
         database.queryByView("all_reviews", ofDesign: self.designName, usingParameters: [.keys([truckId as Valuetype]), .descending(true), .includeDocs(true)]) { (doc:JSON?, error:NSError?) in
             
@@ -429,6 +427,11 @@ public class FoodTruckDB: FoodTruckAPI {
     
     //Get a specific review by id
     public func getReviewById(docId: String, completion: @escaping(ReviewItem?, Error?) -> Void) {
+
+        let database = getDatabase()
+        
+        
+        
         
     }
     
