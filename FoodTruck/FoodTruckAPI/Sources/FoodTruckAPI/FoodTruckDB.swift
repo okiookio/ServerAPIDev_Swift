@@ -99,6 +99,7 @@ public class FoodTruckDB: FoodTruckAPI {
         }
     }
     
+    //MARK: Setup views
     private func setupDBDesign(database: Database) {
         let design: [String: Any] = [
             "_id": "design/\(self.designName)",
@@ -523,13 +524,49 @@ public class FoodTruckDB: FoodTruckAPI {
     //Delete specific review
     public func deleteReview(docId: String, completion: @escaping(Error?) -> Void) {
         
+        let database = getDatabase()
+        
+        database.retrieve(docId) { (doc:JSON?, error:NSError?) in
+            
+            guard let doc = doc, error == nil else {
+                completion(error)
+                return
+            }
+
+            guard let revision = doc["_rev"].string else {
+                completion(APICollectionError.ParseError)
+                return
+            }
+            
+            database.delete(docId, rev: revision, callback: { (error:NSError?) in
+                if error == nil {
+                    completion(nil)
+                } else {
+                    completion(error)
+                }
+            })
+        }
     }
     
     //count all reviews
     public func getAllReviewsCount(completion: @escaping(Int?, Error?) -> Void) {
         
+        let database = getDatabase()
+        database.queryByView("total_reviews", ofDesign: self.designName, usingParameters: []) { (doc:JSON?, error:NSError?) in
+            
+            if let doc = doc, error == nil {
+                
+                if let count = doc["rows"][0]["value"].int {
+                    completion(count, nil)
+                } else {
+                    completion(nil, error)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
     }
-    
+
     //count all reviews for specific truck
     public func getReviewsForTruck(truckId: String, completion: @escaping(Int?, Error?) -> Void) {
         
