@@ -112,6 +112,17 @@ public class FoodTruckDB: FoodTruckAPI {
                 "total_trucks": [
                     "map": "function(doc) { if (doc.type == 'foodtruck') { emit(doc._id, 1); }}",
                     "reduce": "_count"
+                ],
+                "all_reviews": [
+                    "map": "function(doc) { if (doc.type == 'review') { emit(doc.foodtruckid, [doc.foodtruckid, doc._id, doc.reviewtitle, doc.reviewtext, doc.starrating]); }}"
+                ],
+                "total_reviews": [
+                    "map": "function(doc) { if (doc.type == 'review') { emit(doc._id, 1); }}",
+                    "reduce": "_count"
+                ],
+                "avg_rating": [
+                    "map": "function(doc) { if (doc.type == 'review') { emit(doc.foodtruckid, doc.starrating); }}",
+                    "reduce": "_stats"
                 ]
             ]
         ]
@@ -126,6 +137,7 @@ public class FoodTruckDB: FoodTruckAPI {
     
     //MARK: FoodTruckAPI Protocol Methods
     
+    //Get all trucks
     public func getAllTrucks(completion: @escaping([FoodTruckItem]?, Error?) -> Void) {
         
         let couchClient = CouchDBClient(connectionProperties: connectionProps)
@@ -142,6 +154,30 @@ public class FoodTruckDB: FoodTruckAPI {
                 completion(nil, error)
             }
         }
+    }
+    
+    //note that the parsing order is determined in the definition of the view "all_trucks".
+    func parseTrucks(_ document: JSON) throws -> [FoodTruckItem] {
+        
+        guard let rows = document["rows"].array else {
+            throw APICollectionError.ParseError
+        }
+        
+        let trucks: [FoodTruckItem] = rows.flatMap {
+            
+            let doc = $0["value"]
+            
+            guard let id = doc[0].string,
+                let name = doc[1].string,
+                let foodType = doc[2].string,
+                let avgCost = doc[3].float,
+                let latitude = doc[4].float,
+                let longitude = doc[5].float else {
+                    return nil
+            }
+            return FoodTruckItem(docId: id, name: name, foodType: foodType, avgCost: avgCost, latitude: latitude, longitude: longitude)
+        }
+        return trucks
     }
     
     //Get one specific truck
@@ -270,29 +306,8 @@ public class FoodTruckDB: FoodTruckAPI {
             })
         }
     }
+    
 
-    func parseTrucks(_ document: JSON) throws -> [FoodTruckItem] {
-
-        guard let rows = document["rows"].array else {
-            throw APICollectionError.ParseError
-        }
-
-        let trucks: [FoodTruckItem] = rows.flatMap {
-            
-            let doc = $0["value"]
-            
-            guard let id = doc[0].string,
-            let name = doc[1].string,
-            let foodType = doc[2].string,
-            let avgCost = doc[3].float,
-            let latitude = doc[4].float,
-            let longitude = doc[5].float else {
-                return nil
-            }
-            return FoodTruckItem(docId: id, name: name, foodType: foodType, avgCost: avgCost, latitude: latitude, longitude: longitude)
-        }
-        return trucks
-    }
     
     
     //update single foodtruck
@@ -360,5 +375,90 @@ public class FoodTruckDB: FoodTruckAPI {
                 completion(nil, err)
             }
         }
+    }
+    
+    //MARK: Review methods from FoodTruckAPI Protocol
+    
+    //Get all reviews for a specific truck
+    //Note that we need the .keys parameter. The view declaration shows the [key: value] as [truckId: [params]] so we need to pass our truckId into the query to only return the reviews for the one truck.
+    
+    public func getReviews(truckId: String, completion: @escaping([ReviewItem]?, Error?) -> Void) {
+        let couchClient = CouchDBClient(connectionProperties: connectionProps)
+        let database = couchClient.database(dbName)
+        
+        database.queryByView("all_reviews", ofDesign: self.designName, usingParameters: [.keys([truckId as Valuetype]), .descending(true), .includeDocs(true)]) { (doc:JSON?, error:NSError?) in
+            
+            if let doc = doc, error == nil {
+                do {
+                    let reviews = try self.parseReviews(doc)
+                    completion(reviews, nil)
+                } catch {
+                    completion(nil, error)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
+        
+        
+        
+    }
+    
+    func parseReviews(_ document: JSON) throws -> [ReviewItem] {
+        
+        guard let rows = document["rows"].array else {
+            throw APICollectionError.ParseError
+        }
+        
+        let reviews: [ReviewItem] = rows.flatMap {
+            
+            let doc = $0["value"]
+            
+            guard let foodtruckid = doc[0].string,
+                let docid = doc[1].string,
+                let reviewtitle = doc[2].string,
+                let reviewtext = doc[3].string,
+                let starrating = doc[4].int else {
+                return nil
+            }
+            return ReviewItem(docId: docid, foodTruckId: foodtruckid, reviewTitle: reviewtitle, reviewText: reviewtext, starRating: starrating)
+        }
+        return reviews
+    }
+    
+    
+    //Get a specific review by id
+    public func getReviewById(docId: String, completion: @escaping(ReviewItem?, Error?) -> Void) {
+        
+    }
+    
+    //Add a review for a specific truck
+    public func addReview(truckId: String, reviewTitle: String, reviewText: String, reviewStarRating: Int, completion: @escaping(ReviewItem?, Error?) -> Void) {
+        
+    }
+    
+    //Update a specific review
+    public func updateReview(docId: String, truckId: String?, reviewTitle: String?, reviewText: String?, reviewStarRating: Int?, completion: @escaping(ReviewItem?, Error?) -> Void) {
+        
+    }
+    
+    //Delete specific review
+    public func deleteReview(docId: String, completion: @escaping(Error?) -> Void) {
+        
+    }
+    
+    //count all reviews
+    public func getAllReviewsCount(completion: @escaping(Int?, Error?) -> Void) {
+        
+    }
+    
+    //count all reviews for specific truck
+    public func getReviewsForTruck(truckId: String, completion: @escaping(Int?, Error?) -> Void) {
+        
+    }
+    
+    //Avg star rating for a specific truck
+    public func getAvgRating(truckId: String, completion: @escaping(Int?, Error?) -> Void) {
+        
     }
 }
