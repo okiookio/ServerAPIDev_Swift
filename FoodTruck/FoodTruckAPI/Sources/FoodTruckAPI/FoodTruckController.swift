@@ -303,12 +303,70 @@ public final class FoodTruckController {
     
     private func getAllReviewsForTruck(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         
+        guard let truckId = request.parameters["id"] else {
+            response.status(.badRequest)
+            Log.error("ID note found in request")
+            return
+        }
+        
+        foodTruckDB.getReviews(truckId: truckId) { (reviews:[ReviewItem]?, error:Error?) in
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+                
+                guard let reviews = reviews else {
+                    try response.status(.internalServerError).end()
+                    Log.error("Reviews unable to be unwrapped")
+                    return
+                }
+                
+                //toDict() created as extension for array in FoodTruckItem.swift
+                let json = JSON(reviews.toDict())
+                try response.status(.OK).send(json: json).end()
+                
+            } catch {
+                Log.error("Communications error")
+            }
+        }
     }
     
     private func getReviewById(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         
+        guard let docId = request.parameters["id"] else {
+            response.status(.badRequest)
+            Log.error("ID not found in request")
+            return
+        }
+        
+        foodTruckDB.getReviewById(docId: docId) { (review:ReviewItem?, error:Error?) in
+            
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+
+                guard let review = review else {
+                    try response.status(.notFound).end()
+                    Log.error("Could not find a review by provided id")
+                    return
+                }
+
+                let reviewJSON = JSON(review.toDict())
+                try response.status(.OK).send(json: reviewJSON).end()
+                
+            } catch {
+                Log.error("Communications error")
+            }
+        }
     }
 
+    //lecture 46 23:38 mins
+    
     private func addReviewByTruckId(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         
     }
