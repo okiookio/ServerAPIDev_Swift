@@ -118,7 +118,7 @@ public class FoodTruckDB: FoodTruckAPI {
                     "map": "function(doc) { if (doc.type == 'review') { emit(doc.foodtruckid, [doc.foodtruckid, doc._id, doc.reviewtitle, doc.reviewtext, doc.starrating]); }}"
                 ],
                 "total_reviews": [
-                    "map": "function(doc) { if (doc.type == 'review') { emit(doc._id, 1); }}",
+                    "map": "function(doc) { if (doc.type == 'review') { emit(doc.foodtruckid, 1); }}",
                     "reduce": "_count"
                 ],
                 "avg_rating": [
@@ -569,6 +569,22 @@ public class FoodTruckDB: FoodTruckAPI {
 
     //count all reviews for specific truck
     public func getReviewsForTruck(truckId: String, completion: @escaping(Int?, Error?) -> Void) {
+        
+        let database = getDatabase()
+        
+        database.queryByView("total_reviews", ofDesign: self.designName, usingParameters: [.keys([truckId as Valuetype])]) { (doc:JSON?, error:NSError?) in
+         
+            if let doc = doc, error == nil {
+                
+                if let count = doc["rows"][0]["value"].int {
+                    completion(count, nil)
+                } else {
+                    completion(nil, error)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
         
     }
     
