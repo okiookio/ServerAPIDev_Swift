@@ -295,7 +295,24 @@ public class FoodTruckDB: FoodTruckAPI {
                 return
             }
             
-            //TODO: fetch all reviews for the truck
+
+            self.getReviews(truckId: docId, completion: { (reviews:[ReviewItem]?, error: Error?) in
+                
+                guard let reviews = reviews, error == nil else {
+                    completion(error)
+                    return
+                }
+                
+                for review in reviews {
+                    self.deleteReview(docId: review.docId, completion: { (error:Error?) in
+                        guard error == nil else {
+                            completion(error)
+                            return
+                        }
+                    })
+                }
+            })
+            
             
             let rev = doc["_rev"].stringValue
             database.delete(docId, rev: rev, callback: { (error:NSError?) in
@@ -579,7 +596,7 @@ public class FoodTruckDB: FoodTruckAPI {
                 if let count = doc["rows"][0]["value"].int {
                     completion(count, nil)
                 } else {
-                    completion(nil, error)
+                    completion(0, nil)
                 }
             } else {
                 completion(nil, error)
@@ -591,5 +608,20 @@ public class FoodTruckDB: FoodTruckAPI {
     //Avg star rating for a specific truck
     public func getAvgRating(truckId: String, completion: @escaping(Int?, Error?) -> Void) {
         
+        let database = getDatabase()
+        database.queryByView("avg_rating", ofDesign: self.designName, usingParameters: [.keys([truckId as Valuetype])]) { (doc:JSON?, error:NSError?) in
+            
+            if let doc = doc, error == nil {
+                
+                if let sum = doc["rows"][0]["value"]["sum"].float, let count = doc["rows"][0]["value"]["count"].float {
+                    let avg = Int(round(sum / count))
+                    completion(avg, nil)
+                } else {
+                    completion(1, nil)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
     }
 }
