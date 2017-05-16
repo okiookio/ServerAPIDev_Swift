@@ -27,4 +27,28 @@ public protocol FoodTruckAPI {
     
     //Get count of all foodtrucks
     func getTruckCount(completion: @escaping(Int?, Error?) -> Void)
+    
+    
+    //MARK: Reviews
+    //Get all reviews for a specific truck
+    func getReviews(truckId: String, completion: @escaping([ReviewItem]?, Error?) -> Void)
+    
+    //Get a specific review by id
+    func getReviewById(docId: String, completion: @escaping(Review?, Error?) -> Void)
+    
+    //Add a review for a specific truck
+    func addReviewToTruck()
+    
+    //Update a specific review
+    
+    
+    //Delete specific review
+    
+    //count all reviews
+    
+    //count all reviews for specific truck
+    
+    
+    //Avg star rating for a specific truck
+    
 }
