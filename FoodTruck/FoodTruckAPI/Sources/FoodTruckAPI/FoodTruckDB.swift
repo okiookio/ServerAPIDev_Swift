@@ -298,6 +298,11 @@ public class FoodTruckDB: FoodTruckAPI {
 
             self.getReviews(truckId: docId, completion: { (reviews:[ReviewItem]?, error: Error?) in
                 
+                guard error == nil else {
+                    completion(error)
+                    return
+                }
+                
                 guard let reviews = reviews, error == nil else {
                     completion(error)
                     return
@@ -311,16 +316,15 @@ public class FoodTruckDB: FoodTruckAPI {
                         }
                     })
                 }
-            })
-            
-            
-            let rev = doc["_rev"].stringValue
-            database.delete(docId, rev: rev, callback: { (error:NSError?) in
-                if error == nil {
-                    completion(nil)
-                } else {
-                    completion(error)
-                }
+                
+                let rev = doc["_rev"].stringValue
+                database.delete(docId, rev: rev, callback: { (error:NSError?) in
+                    if error == nil {
+                        completion(nil)
+                    } else {
+                        completion(error)
+                    }
+                })
             })
         }
     }
@@ -414,9 +418,6 @@ public class FoodTruckDB: FoodTruckAPI {
                 completion(nil, error)
             }
         }
-        
-        
-        
     }
     
     func parseReviews(_ document: JSON) throws -> [ReviewItem] {
@@ -576,7 +577,7 @@ public class FoodTruckDB: FoodTruckAPI {
                 if let count = doc["rows"][0]["value"].int {
                     completion(count, nil)
                 } else {
-                    completion(nil, error)
+                    completion(0, error)
                 }
             } else {
                 completion(nil, error)

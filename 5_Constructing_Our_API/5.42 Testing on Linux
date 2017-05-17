@@ -47,5 +47,5 @@ foodtruckapi_app_1 exited with code 0
 
 This means that everything worked. If anything fails you can check the error messages for the file names and lines.
 
-CONTROL C will get you back to the command line.
+control c - will get you back to the command line.
 

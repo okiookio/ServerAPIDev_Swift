@@ -591,7 +591,7 @@ public final class FoodTruckController {
                     return
                 }
 
-                let result = JSON(["average": avg])
+                let result = JSON(["averagerating": avg])
                 try response.status(.OK).send(json: result).end()
                 Log.info("Average successfully retrieved")
                 
