@@ -365,18 +365,145 @@ public final class FoodTruckController {
         }
     }
 
-    //lecture 46 23:38 mins
-    
     private func addReviewByTruckId(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+
+        guard let truckId = request.parameters["id"] else {
+            response.status(.badRequest)
+            Log.error("Truck ID not found in request")
+            return
+        }
         
+        guard let body = request.body else {
+            response.status(.badRequest)
+            Log.error("No body in request")
+            return
+        }
+        
+        //ensures that variable json is of type .json
+        guard case let .json(json) = body else {
+            response.status(.badRequest)
+            Log.error("invalid json sent in body")
+            return
+        }
+        
+        let reviewtitle = json["reviewtitle"].stringValue
+        let reviewtext = json["reviewtext"].stringValue
+        let reviewstarrating = json["reviewstarrating"].intValue
+        
+        
+        guard reviewtitle != "" else {
+            response.status(.badRequest)
+            Log.error("necessary field empty")
+            return
+        }
+        
+        foodTruckDB.addReview(truckId: truckId, reviewTitle: reviewtitle, reviewText: reviewtext, reviewStarRating: reviewstarrating) { (review:ReviewItem?, error:Error?) in
+            
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+                
+                guard let review = review else {
+                    try response.status(.internalServerError).end()
+                    Log.error("Review not found")
+                    return
+                }
+                
+                let result = JSON(review.toDict())
+                Log.info("\(reviewtitle) added to vehicle list")
+                
+                do {
+                    try response.status(.OK).send(json: result).end()
+                } catch {
+                    Log.error("error sending response")
+                }
+            } catch {
+                Log.error("Communications error")
+            }
+        }
     }
 
     private func updateReviewById(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+     
+        guard let docId = request.parameters["id"] else {
+            response.status(.badRequest)
+            Log.error("ID not found in request")
+            return
+        }
         
+        guard let body = request.body else {
+            response.status(.badRequest)
+            Log.error("Body not included in request")
+            return
+        }
+
+        guard case let .json(json) = body else {
+            response.status(.badRequest)
+            Log.error("invalid json in body of request")
+            return
+        }
+        
+        let truckid: String? = json["foodtruckid"].stringValue == "" ? nil : json["foodtruckid"].stringValue
+        let reviewtitle: String? = json["reviewtitle"].stringValue == "" ? nil : json["reviewtitle"].stringValue
+        let reviewtext: String? = json["reviewtext"].stringValue == "" ? nil : json["reviewtext"].stringValue
+        let reviewstarrating: Int? = json["starrating"].intValue == 0 ? nil : json["starrating"].intValue
+        
+        foodTruckDB.updateReview(docId: docId, truckId: truckid, reviewTitle: reviewtitle, reviewText: reviewtext, reviewStarRating: reviewstarrating) { (review:ReviewItem?, error:Error?) in
+            
+            do {
+                
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+
+                guard let review = review else {
+                    try response.status(.internalServerError).end()
+                    Log.error("Review not found")
+                    return
+                }
+
+                let result = JSON(review.toDict())
+                Log.info("\(reviewtitle) was updated")
+                
+                do {
+                    try response.status(.OK).send(json: result).end()
+                } catch {
+                    Log.error("Error sending response")
+                }
+            } catch {
+                Log.error("Communications error")
+            }
+        }
     }
 
     private func deleteReviewById(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         
+        guard let docId = request.parameters["id"] else {
+            response.status(.badRequest)
+            Log.error("ID not found in request")
+            return
+        }
+        
+        foodTruckDB.deleteReview(docId: docId) { (error:Error?) in
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+                
+                try response.status(.OK).end()
+                Log.info("\(docId) was successfully deleted")
+                
+            } catch {
+                Log.error("Communications error")
+            }
+        }
     }
     
     private func getReviewsCount(request: RouterRequest, response: RouterResponse, next: () -> Void) {
