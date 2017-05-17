@@ -585,7 +585,7 @@ public class FoodTruckDB: FoodTruckAPI {
     }
 
     //count all reviews for specific truck
-    public func getReviewsForTruck(truckId: String, completion: @escaping(Int?, Error?) -> Void) {
+    public func getReviewsCountForTruck(truckId: String, completion: @escaping(Int?, Error?) -> Void) {
         
         let database = getDatabase()
         

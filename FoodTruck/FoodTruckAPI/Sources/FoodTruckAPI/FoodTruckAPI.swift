@@ -49,7 +49,7 @@ public protocol FoodTruckAPI {
     func getAllReviewsCount(completion: @escaping(Int?, Error?) -> Void)
     
     //count all reviews for specific truck
-    func getReviewsForTruck(truckId: String, completion: @escaping(Int?, Error?) -> Void)
+    func getReviewsCountForTruck(truckId: String, completion: @escaping(Int?, Error?) -> Void)
     
     //Avg star rating for a specific truck
     func getAvgRating(truckId: String, completion: @escaping(Int?, Error?) -> Void)

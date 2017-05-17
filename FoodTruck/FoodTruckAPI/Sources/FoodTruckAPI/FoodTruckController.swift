@@ -508,16 +508,97 @@ public final class FoodTruckController {
     
     private func getReviewsCount(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         
+        foodTruckDB.getAllReviewsCount { (count:Int?, error:Error?) in
+
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+                
+                guard let count = count else {
+                    try response.status(.internalServerError).end()
+                    Log.error("Failed to get count")
+                    return
+                }
+
+                let result = JSON(["count": count])
+                try response.status(.OK).send(json: result).end()
+                Log.info("Count was successfully retrieved")
+            } catch {
+                Log.error("Communications error")
+            }
+        }
     }
     
     
     private func getReviewsCountByTruckId(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         
+        guard let truckId = request.parameters["id"] else {
+            response.status(.badRequest)
+            Log.error("Truck id not found in request")
+            return
+        }
+        
+        foodTruckDB.getReviewsCountForTruck(truckId: truckId) { (count:Int?, error:Error?) in
+            
+            do {
+                
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+
+                
+                guard let count = count else {
+                    try response.status(.internalServerError).end()
+                    Log.error("Failed to get count")
+                    return
+                }
+
+                let result = JSON(["count": count])
+                try response.status(.OK).send(json: result).end()
+            
+                Log.info("Count for truck \(truckId) was successfully retrieved")
+            } catch {
+                Log.error("Communications error")
+            }
+        }
     }
-    
     
     private func getReviewsAverageByTruckId(request: RouterRequest, response: RouterResponse, next: () -> Void) {
         
+        guard let truckId = request.parameters["id"] else {
+            response.status(.badRequest)
+            Log.error("Truck id not found in request")
+            return
+        }
+        
+        foodTruckDB.getAvgRating(truckId: truckId) { (avg:Int?, error:Error?) in
+            
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+                
+                guard let avg = avg else {
+                    try response.status(.internalServerError).end()
+                    Log.error("Failed to get average")
+                    return
+                }
+
+                let result = JSON(["average": avg])
+                try response.status(.OK).send(json: result).end()
+                Log.info("Average successfully retrieved")
+                
+            } catch {
+                Log.error("Communications error")
+            }
+        }
     }
     
 }
