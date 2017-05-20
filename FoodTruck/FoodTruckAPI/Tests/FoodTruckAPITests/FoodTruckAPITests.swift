@@ -623,9 +623,6 @@ class FoodTruckAPITests: XCTestCase {
         }
     }
 
-    func testGetReviewsForTruck() {
-        
-    }
     
     //            ("testCountReviewsForTruck", testCountReviewsForTruck),
     //("testGetAverageStarRating", testGetAverageStarRating),
