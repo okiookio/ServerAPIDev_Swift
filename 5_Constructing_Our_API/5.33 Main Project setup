@@ -8,17 +8,14 @@ STEPS:
 5. MANIFEST FOR BLUEMIX
 6. CREATE XCODE PROJ
 
-1. CREATE MODULES
+1. CREATE DIRECTORIES
 create a main directory with another directory inside it for our kitura project. We will later build the client-side app in the main directory.
 
 Tims-Macbook-Pro-2:ServerAPIDev_Swift timbeals$ mkdir FoodTruck
 Tims-Macbook-Pro-2:ServerAPIDev_Swift timbeals$ mkdir FoodTruck/FoodTruckAPI
 
-We will create two modules in our Kitura project
-1) FoodtruckAPI - a library or framework
-2) FoodtrucksServer - executable
 
-INITIALIZE THE SWIFT PACKAGE TO CREATE THE LIBRARY
+INITIALIZE THE SWIFT PACKAGE TO CREATE THE LIBRARY MODULES
 Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ swift package init
 
 MOVE INTO SOURCES
@@ -26,6 +23,11 @@ Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ cd Sources/
 Tims-Macbook-Pro-2:Sources timbeals$ ls
 FoodTruckAPI.swift
 
+We will create two modules in our Kitura project
+1) FoodtruckAPI - a library or framework
+2) FoodtrucksServer - executable
+
+ANY DIRECTORIES WE BUILD INSIDE SOURCES WILL BE TREATED AS MODULES.
 CREATE TWO NEW DIRECTORIES. ONE FOR THE LIBRARY AND THE OTHER FOR THE EXECUTABLE
 Tims-Macbook-Pro-2:Sources timbeals$ mkdir FoodTruckAPI
 Tims-Macbook-Pro-2:Sources timbeals$ mkdir FoodTruckServer
@@ -73,7 +75,7 @@ Tims-Macbook-Pro-2:FoodTruckServer timbeals$ touch main.swift
 
 
 
-BUILD THE PROJECT FROM THE ROOT DIRECTORY
+BUILD THE PROJECT
 
 Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ swift build
 ...

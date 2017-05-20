@@ -21,18 +21,18 @@ struct ConfigError: LocalizedError {
 //If the configuration manager is unable to get the environment services then it throws an error.
 
 //CFENV V 4. LATEST
-    func getConfig() throws -> Service {
-        let config: ConfigurationManager = ConfigurationManager()
-        config.load(.environmentVariables)
-        
-        Log.warning("Attempting to retreive CF Env")
-        
-        let services = config.getServices()
-        let servicePair = services.filter { $0.value.label == "cloudantNoSQLDB" }.first
-        guard let service = servicePair?.value else { throw ConfigError() }
-        
-        return service
-    }
+func getConfig() throws -> Service {
+    let config: ConfigurationManager = ConfigurationManager()
+    config.load(.environmentVariables)
+    
+    Log.warning("Attempting to retreive CF Env")
+    
+    let services = config.getServices()
+    let servicePair = services.filter { $0.value.label == "cloudantNoSQLDB" }.first
+    guard let service = servicePair?.value else { throw ConfigError() }
+    
+    return service
+}
 
 //DEPRECATED
 //func getConfig() throws -> Service {

@@ -16,8 +16,6 @@ import SwiftyJSON
 //trucks is your delegate. The class that you assign to trucks will conform to the protoco. When you call the protocol methods in this class, the trucks property will perform those methods according to their implementation in its class.
 //routeSetup: 'all' indicates that all requests (get, put post etc) will go through the root and be handled by middleware. Bodyparser is provided by Kitura. It allows us to parse the body of a request and pull values out of it.
 
-
-
 public final class FoodTruckController {
     
     public let foodTruckDB: FoodTruckAPI
@@ -600,5 +598,4 @@ public final class FoodTruckController {
             }
         }
     }
-    
 }

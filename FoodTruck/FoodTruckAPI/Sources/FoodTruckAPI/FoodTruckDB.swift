@@ -82,6 +82,7 @@ public class FoodTruckDB: FoodTruckAPI {
     
     private func setupDB() {
         let couchClient = CouchDBClient(connectionProperties: connectionProps)
+        
         couchClient.dbExists(dbName) { (nameExists: Bool, error: NSError?) in
             if nameExists {
                 Log.info("DB exists")
@@ -115,14 +116,14 @@ public class FoodTruckDB: FoodTruckAPI {
                     "reduce": "_count"
                 ],
                 "all_reviews": [
-                    "map": "function(doc) { if (doc.type == 'review') { emit(doc.foodtruckid, [doc.foodtruckid, doc._id, doc.reviewtitle, doc.reviewtext, doc.starrating]); }}"
+                    "map": "function(doc) { if (doc.type == 'review') { emit(doc.truckid, [doc.truckid, doc._id, doc.reviewtitle, doc.reviewtext, doc.starrating]); }}"
                 ],
                 "total_reviews": [
-                    "map": "function(doc) { if (doc.type == 'review') { emit(doc.foodtruckid, 1); }}",
+                    "map": "function(doc) { if (doc.type == 'review') { emit(doc.truckid, 1); }}",
                     "reduce": "_count"
                 ],
                 "avg_rating": [
-                    "map": "function(doc) { if (doc.type == 'review') { emit(doc.foodtruckid, doc.starrating); }}",
+                    "map": "function(doc) { if (doc.type == 'review') { emit(doc.truckid, doc.starrating); }}",
                     "reduce": "_stats"
                 ]
             ]
@@ -437,7 +438,7 @@ public class FoodTruckDB: FoodTruckAPI {
                 let starrating = doc[4].int else {
                 return nil
             }
-            return ReviewItem(docId: docid, foodTruckId: foodtruckid, reviewTitle: reviewtitle, reviewText: reviewtext, starRating: starrating)
+            return ReviewItem(docId: docid, truckId: foodtruckid, reviewTitle: reviewtitle, reviewText: reviewtext, starRating: starrating)
         }
         return reviews
     }
@@ -455,7 +456,7 @@ public class FoodTruckDB: FoodTruckAPI {
             }
             
             guard let docid = doc["_id"].string,
-            let foodtruckid = doc["foodtruckid"].string,
+            let foodtruckid = doc["truckid"].string,
             let reviewtitle = doc["reviewtitle"].string,
             let reviewtext = doc["reviewtext"].string,
                 let starrating = doc["starrating"].int else {
@@ -463,7 +464,7 @@ public class FoodTruckDB: FoodTruckAPI {
                     return
             }
             
-            let review = ReviewItem(docId: docid, foodTruckId: foodtruckid, reviewTitle: reviewtitle, reviewText: reviewtext, starRating: starrating)
+            let review = ReviewItem(docId: docid, truckId: foodtruckid, reviewTitle: reviewtitle, reviewText: reviewtext, starRating: starrating)
             completion(review, nil)
         }
     }
@@ -473,7 +474,7 @@ public class FoodTruckDB: FoodTruckAPI {
         
         let reviewJSON: [String: Any] = [
             "type": "review",
-            "foodtruckid": truckId,
+            "truckid": truckId,
             "reviewtitle": reviewTitle,
             "reviewtext": reviewText,
             "starrating": reviewStarRating
@@ -481,13 +482,13 @@ public class FoodTruckDB: FoodTruckAPI {
         
         let database = getDatabase()
         database.create(JSON(reviewJSON)) { (id:String?, rev:String?, doc:JSON?, error:NSError?) in
-            guard error != nil else {
+            guard error == nil else {
                 completion(nil, error)
                 return
             }
             
             if let id = id {
-                let review = ReviewItem(docId: id, foodTruckId: truckId, reviewTitle: reviewTitle, reviewText: reviewText, starRating: reviewStarRating)
+                let review = ReviewItem(docId: id, truckId: truckId, reviewTitle: reviewTitle, reviewText: reviewText, starRating: reviewStarRating)
                 completion(review, nil)
             } else {
                 completion(nil, nil)
@@ -514,14 +515,14 @@ public class FoodTruckDB: FoodTruckAPI {
             }
             
             let type = "review"
-            let truckid = truckId ?? doc["foodtruckid"].stringValue
+            let truckid = truckId ?? doc["truckid"].stringValue
             let reviewtitle = reviewTitle ?? doc["reviewtitle"].stringValue
             let reviewtext = reviewText ?? doc["reviewtext"].stringValue
             let starrating = reviewStarRating ?? doc["starrating"].intValue
             
             let reviewJSON: [String: Any] = [
                 "type": type,
-                "foodtruckid": truckid,
+                "truckid": truckid,
                 "reviewtitle": reviewtitle,
                 "reviewtext": reviewtext,
                 "starrating": starrating
@@ -533,7 +534,7 @@ public class FoodTruckDB: FoodTruckAPI {
                     return
                 }
                 
-                let updatedReview = ReviewItem(docId: docId, foodTruckId: truckid, reviewTitle: reviewtitle, reviewText: reviewtext, starRating: starrating)
+                let updatedReview = ReviewItem(docId: docId, truckId: truckid, reviewTitle: reviewtitle, reviewText: reviewtext, starRating: starrating)
                 completion(updatedReview, nil)
             })
         }
@@ -625,4 +626,6 @@ public class FoodTruckDB: FoodTruckAPI {
             }
         }
     }
+    
+    
 }

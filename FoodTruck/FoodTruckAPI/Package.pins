@@ -16,7 +16,7 @@
     {
       "package": "CloudFoundryEnv",
       "reason": null,
-      "repositoryURL": "https://github.com/IBM-Swift/Swift-cfenv",
+      "repositoryURL": "https://github.com/IBM-Swift/Swift-cfenv.git",
       "version": "4.0.2"
     },
     {

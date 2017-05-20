@@ -27,8 +27,8 @@ let controller = FoodTruckController(backend: foodTruckDB)
 
 //CloudFoundry gets the app environment from bluemix. However, because it is not connected during development, it will set defaults. For example it will set port to 8080.
 
+//LATEST
 let configMgr =  ConfigurationManager().load(.environmentVariables)
-
 let port = configMgr.getApp()?.port ?? 8080
     
 Log.verbose("Assigned port \(port)")
@@ -36,4 +36,16 @@ Log.verbose("Assigned port \(port)")
 Kitura.addHTTPServer(onPort: port, with: controller.router)
     
 Kitura.run()
+
+
+//DEPRECATED
+//do {
+//    let port = try CloudFoundryEnv.getAppEnv().port
+//    Log.verbose("Assigned port \(port)")
+//    
+//    Kitura.addHTTPServer(onPort: port, with: controller.router)
+//    Kitura.run()
+//} catch {
+//    Log.error("Server failed to start")
+//}
 
