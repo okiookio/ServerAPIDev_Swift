@@ -22,6 +22,7 @@ public final class FoodTruckController {
     public let router = Router()
     public let trucksPath = "api/v1/trucks"
     public let reviewsPath = "api/v1/reviews"
+    public let clearPath = "api/v1/clear"
     
     public init(backend: FoodTruckAPI) {
         self.foodTruckDB = backend
@@ -47,9 +48,13 @@ public final class FoodTruckController {
         //delete one truck
         router.delete("\(trucksPath)/:id", handler: deleteTruckById)
         
+        //CLEAR ALL (TEMPORARY)
+        router.get("\(clearPath)", handler: clearAll)
+        
         //update one truck
         router.put("\(trucksPath)/:id", handler: updateTruckById)
     
+        
         //MARK: review methods
         //get all reviews for a specific truck
         router.get("\(trucksPath)/reviews/:id", handler: getAllReviewsForTruck)
@@ -220,6 +225,26 @@ public final class FoodTruckController {
                 Log.error("Communication error")
             }
         }
+    }
+    
+    private func clearAll(request: RouterRequest, response: RouterResponse, next: () -> Void) {
+        
+        foodTruckDB.clearAll { (error:Error?) in
+            
+            do {
+                guard error == nil else {
+                    try response.status(.badRequest).end()
+                    Log.error(error.debugDescription)
+                    return
+                }
+                try response.status(.OK).end()
+                Log.info("Clear all was successful")
+                
+            } catch {
+                Log.error("Communication error")
+            }
+        }
+        
     }
     
     private func  updateTruckById(request: RouterRequest, response: RouterResponse, next: () -> Void) {
