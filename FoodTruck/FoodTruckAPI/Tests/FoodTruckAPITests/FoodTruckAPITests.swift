@@ -622,8 +622,83 @@ class FoodTruckAPITests: XCTestCase {
             XCTAssertNil(error, "test count all reviews timed out")
         }
     }
-//kkkk
     
-    //            ("testCountReviewsForTruck", testCountReviewsForTruck),
+    func testCountReviewsForTruck {
+        
+        guard let foodTruckDB = foodTruckDB else {
+            XCTFail()
+            return
+        }
+        
+        let countReviewsExpectation = expectation(description: "count all reviews")
+        
+        //make a truck
+        foodTruckDB.addFoodTruck(name: "test name", foodType: "test type", avgCost: 6, latitude: 0, longitude: 0) { (foodTruck:FoodTruckItem?, error:Error?) in
+            
+            guard error == nil else {
+                XCTFail()
+                return
+            }
+            
+            //make two reviews for the truck
+            if let foodTruck = foodTruck {
+             
+                foodTruckDB.addReview(truckId: foodTruck.docId, reviewTitle: "review one", reviewText: "review one", reviewStarRating: 3, completion: { (reviewOne:ReviewItem?, error:Error?) in
+                    
+                    guard error == nil else {
+                        XCTFail()
+                        return
+                    }
+                    
+                    if let reviewOne = reviewOne {
+                        
+                        foodTruckDB.addReview(truckId: foodTruck.docId, reviewTitle: "review two", reviewText: "review two", reviewStarRating: 3, completion: { (reviewTwo:ReviewItem?, error:Error?) in
+                            
+                            guard error == nil else {
+                                XCTFail()
+                                return
+                            }
+                            
+                            if let reviewTwo = reviewTwo {
+                                
+                                //assert that count for the truck is two
+                                foodTruckDB.getReviewsCountForTruck(truckId: foodTruck.docId, completion: { (count:Int?, error:Error?) in
+                                    
+                                    guard error == nil else {
+                                        XCTFail()
+                                        return
+                                    }
+                                    
+                                    if let count = count {
+                                        
+                                        XCTAssertEqual(count, 2)
+                                        countReviewsExpectation.fulfill()
+                                        
+                                    } else {
+                                        XCTFail()
+                                        return
+                                    }
+                                })
+                                
+                            } else {
+                                XCTFail()
+                                return
+                            }
+                        })
+                    } else {
+                        XCTFail()
+                        return
+                    }
+                })
+            } else {
+                XCTFail()
+                return
+            }
+        }
+        waitForExpectations(timeout: 5) { (error:Error?) in
+            XCTAssertNil(error, "count reviews for truck timed out")
+        }
+    }
+    
     //("testGetAverageStarRating", testGetAverageStarRating),
 }
