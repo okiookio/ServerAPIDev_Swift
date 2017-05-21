@@ -18,8 +18,8 @@ class FoodTruckAPITests: XCTestCase {
             ("testUpdateReview", testUpdateReview),
             ("testDeleteReview", testDeleteReview),
             ("testCountAllReviews", testCountAllReviews),
-//            ("testCountReviewsForTruck", testCountReviewsForTruck),
-            //("testGetAverageStarRating", testGetAverageStarRating),
+            ("testCountReviewsForTruck", testCountReviewsForTruck),
+            ("testGetAverageStarRating", testGetAverageStarRating),
         ]
     }
     
@@ -623,7 +623,7 @@ class FoodTruckAPITests: XCTestCase {
         }
     }
     
-    func testCountReviewsForTruck {
+    func testCountReviewsForTruck() {
         
         guard let foodTruckDB = foodTruckDB else {
             XCTFail()
@@ -650,7 +650,7 @@ class FoodTruckAPITests: XCTestCase {
                         return
                     }
                     
-                    if let reviewOne = reviewOne {
+                    if reviewOne != nil {
                         
                         foodTruckDB.addReview(truckId: foodTruck.docId, reviewTitle: "review two", reviewText: "review two", reviewStarRating: 3, completion: { (reviewTwo:ReviewItem?, error:Error?) in
                             
@@ -659,7 +659,7 @@ class FoodTruckAPITests: XCTestCase {
                                 return
                             }
                             
-                            if let reviewTwo = reviewTwo {
+                            if reviewTwo != nil {
                                 
                                 //assert that count for the truck is two
                                 foodTruckDB.getReviewsCountForTruck(truckId: foodTruck.docId, completion: { (count:Int?, error:Error?) in
@@ -700,5 +700,92 @@ class FoodTruckAPITests: XCTestCase {
         }
     }
     
-    //("testGetAverageStarRating", testGetAverageStarRating),
+    func testGetAverageStarRating() {
+    
+        guard let foodTruckDB = foodTruckDB else {
+            XCTFail()
+            return
+        }
+        
+        let getAverageExpectation = expectation(description: "get review average expectation")
+        
+        //create a truck
+        foodTruckDB.addFoodTruck(name: "test name", foodType: "test type", avgCost: 5, latitude: 0, longitude: 0) { (foodTruck:FoodTruckItem?, error:Error?) in
+            
+            guard error == nil else {
+                XCTFail()
+                return
+            }
+            
+            if let foodTruck = foodTruck {
+                //create 3 reviews with values 4,3,2
+                foodTruckDB.addReview(truckId: foodTruck.docId, reviewTitle: "test value", reviewText: "test value", reviewStarRating: 4, completion: { (reviewRatingFour:ReviewItem?, error:Error?) in
+                    
+                    guard error == nil else {
+                        XCTFail()
+                        return
+                    }
+                    
+                    if reviewRatingFour != nil {
+                     
+                        foodTruckDB.addReview(truckId: foodTruck.docId, reviewTitle: "test value", reviewText: "test value", reviewStarRating: 3, completion: { (reviewRatingThree:ReviewItem?, error:Error?) in
+                            
+                            guard error == nil else {
+                                XCTFail()
+                                return
+                            }
+                            
+                            if reviewRatingThree != nil {
+                                foodTruckDB.addReview(truckId: foodTruck.docId, reviewTitle: "test value", reviewText: "test value", reviewStarRating: 2, completion: { (reviewRatingTwo:ReviewItem?, error:Error?) in
+                                    guard error == nil else {
+                                        XCTFail()
+                                        return
+                                    }
+                                    
+                                    if reviewRatingTwo != nil {
+                                        
+                                         //check that the average is 3
+                                        foodTruckDB.getAvgRating(truckId: foodTruck.docId, completion: { (average:Int?, error:Error?) in
+                                            
+                                            guard error == nil else {
+                                                XCTFail()
+                                                return
+                                            }
+                                            
+                                            if average != nil {
+                                                
+                                                XCTAssertEqual(average, 3)
+                                                getAverageExpectation.fulfill()
+                                            } else {
+                                                XCTFail()
+                                                return
+                                            }
+                                        })
+                                        
+                                    } else {
+                                        XCTFail()
+                                        return
+                                    }
+                                })
+                            } else {
+                                XCTFail()
+                                return
+                            }
+                        })
+                        
+                    } else {
+                        XCTFail()
+                        return
+                    }
+                })
+                
+            } else {
+                XCTFail()
+                return
+            }
+        }
+        waitForExpectations(timeout: 5) { (error:Error?) in
+            XCTAssertNil(error, "get average rating timed out")
+        }
+    }
 }
