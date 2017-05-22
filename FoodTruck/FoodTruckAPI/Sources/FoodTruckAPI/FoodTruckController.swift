@@ -59,6 +59,12 @@ public final class FoodTruckController {
         //get all reviews for a specific truck
         router.get("\(trucksPath)/reviews/:id", handler: getAllReviewsForTruck)
         
+        //reviews count (all)
+        router.get("\(reviewsPath)/count", handler: getReviewsCount)
+        
+        //reviews count (one truck)
+        router.get("\(reviewsPath)/count/:id", handler: getReviewsCountByTruckId)
+        
         //get single specific review
         router.get("\(reviewsPath)/:id", handler: getReviewById)
         
@@ -70,12 +76,6 @@ public final class FoodTruckController {
         
         //delete review
         router.delete("\(reviewsPath)/:id", handler: deleteReviewById)
-        
-        //reviews count (all)
-        router.get("\(reviewsPath)/count", handler: getReviewsCount)
-        
-        //reviews count (one truck)
-        router.get("\(reviewsPath)/count/:id", handler: getReviewsCountByTruckId)
         
         //avg rating (one truck)
         router.get("\(reviewsPath)/rating/:id", handler: getReviewsAverageByTruckId)
@@ -411,7 +411,7 @@ public final class FoodTruckController {
         
         let reviewtitle = json["reviewtitle"].stringValue
         let reviewtext = json["reviewtext"].stringValue
-        let reviewstarrating = json["reviewstarrating"].intValue
+        let reviewstarrating = json["starrating"].intValue
         
         
         guard reviewtitle != "" else {
