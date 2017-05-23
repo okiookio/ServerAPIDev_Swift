@@ -1,4 +1,4 @@
-Setup FoodTruck Client
+7.56 SETUP FOODTRUCK CLIENT
 
 Create a new xcode project named FoodTruckClient. Its root directory should be level with FoodTruckAPIs Root directory.
 
@@ -16,4 +16,18 @@ OPEN THE PROJECT WORKSPACE AND ADD FOODTRUCKAPI PROJECT.
 Remember that when you do a pod install you are then required to use a workspace instead of a project file.
 
 File > Add files to... > (select FoodTruckAPI.xcodeproj)
+
+
+7.57 ORGANIZING CONSTANTS
+
+So that you can test your client with a listening server locally, you can spin it up with your docker-compose.
+
+Tims-Macbook-Pro-2:FoodTruckAPI timbeals$ docker-compose up
+
+Next, you need to ensure that you can communicate with your local server while you are developing. The default for a project is to disallow insecure network calls (not https), so you need to go into your info.plist and change the default.
+
+AppTransport Security Settings (toggle down the arrow and add this key value pair)
+Allow Arbitrary loads => true
+
+
 

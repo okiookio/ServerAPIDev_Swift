@@ -15,6 +15,7 @@
 		B02083A51ED3DF4400F878C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B02083A41ED3DF4400F878C3 /* Assets.xcassets */; };
 		B02083A81ED3DF4400F878C3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B02083A61ED3DF4400F878C3 /* LaunchScreen.storyboard */; };
 		B02083B31ED3DF4500F878C3 /* FoodTruckClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02083B21ED3DF4500F878C3 /* FoodTruckClientTests.swift */; };
+		B0A5E9E91ED3E8ED00BC4905 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A5E9E81ED3E8ED00BC4905 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		B02083AE1ED3DF4500F878C3 /* FoodTruckClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodTruckClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B02083B21ED3DF4500F878C3 /* FoodTruckClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTruckClientTests.swift; sourceTree = "<group>"; };
 		B02083B41ED3DF4500F878C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0A5E9E81ED3E8ED00BC4905 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CE7772499A86817DF115D518 /* Pods-FoodTruckClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodTruckClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-FoodTruckClient/Pods-FoodTruckClient.release.xcconfig"; sourceTree = "<group>"; };
 		EF746DC235E2EF69F01095DE /* Pods_FoodTruckClientTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FoodTruckClientTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -109,12 +111,11 @@
 		B020839C1ED3DF4400F878C3 /* FoodTruckClient */ = {
 			isa = PBXGroup;
 			children = (
-				B020839D1ED3DF4400F878C3 /* AppDelegate.swift */,
-				B020839F1ED3DF4400F878C3 /* ViewController.swift */,
-				B02083A11ED3DF4400F878C3 /* Main.storyboard */,
-				B02083A41ED3DF4400F878C3 /* Assets.xcassets */,
-				B02083A61ED3DF4400F878C3 /* LaunchScreen.storyboard */,
-				B02083A91ED3DF4400F878C3 /* Info.plist */,
+				B0A5E9E71ED3E78900BC4905 /* Controller */,
+				B0A5E9E61ED3E78500BC4905 /* View */,
+				B0A5E9E51ED3E77E00BC4905 /* Model */,
+				B0A5E9E31ED3E76F00BC4905 /* Services */,
+				B0A5E9E21ED3E6A500BC4905 /* Resources */,
 			);
 			path = FoodTruckClient;
 			sourceTree = "<group>";
@@ -126,6 +127,48 @@
 				B02083B41ED3DF4500F878C3 /* Info.plist */,
 			);
 			path = FoodTruckClientTests;
+			sourceTree = "<group>";
+		};
+		B0A5E9E21ED3E6A500BC4905 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B02083A41ED3DF4400F878C3 /* Assets.xcassets */,
+				B02083A91ED3DF4400F878C3 /* Info.plist */,
+				B0A5E9E81ED3E8ED00BC4905 /* Constants.swift */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		B0A5E9E31ED3E76F00BC4905 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		B0A5E9E51ED3E77E00BC4905 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		B0A5E9E61ED3E78500BC4905 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B02083A61ED3DF4400F878C3 /* LaunchScreen.storyboard */,
+				B02083A11ED3DF4400F878C3 /* Main.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		B0A5E9E71ED3E78900BC4905 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B020839D1ED3DF4400F878C3 /* AppDelegate.swift */,
+				B020839F1ED3DF4400F878C3 /* ViewController.swift */,
+			);
+			name = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -334,6 +377,7 @@
 			files = (
 				B02083A01ED3DF4400F878C3 /* ViewController.swift in Sources */,
 				B020839E1ED3DF4400F878C3 /* AppDelegate.swift in Sources */,
+				B0A5E9E91ED3E8ED00BC4905 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,6 +589,7 @@
 				B02083B91ED3DF4500F878C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B02083BA1ED3DF4500F878C3 /* Build configuration list for PBXNativeTarget "FoodTruckClientTests" */ = {
 			isa = XCConfigurationList;
@@ -553,6 +598,7 @@
 				B02083BC1ED3DF4500F878C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
