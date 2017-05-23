@@ -1,0 +1,44 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "97B165520CB0C29C7F567CF6E2C95BEAE77240EE",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "92AF87893551AD3F2DEE78BEF3E924B9C5659E09" : 9223372036854775807,
+    "77528AA6C8B451D66547916CA3CB970C85CBD7B4" : 9223372036854775807,
+    "97B165520CB0C29C7F567CF6E2C95BEAE77240EE" : 9223372036854775807,
+    "5F415FE5B1A6A489A13E7907BF4842C23F213A35" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1083AA11-97BE-47CC-B3D3-DB21CCD0CC84",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "92AF87893551AD3F2DEE78BEF3E924B9C5659E09" : "ServerAPIDev_Swift\/FoodTruck\/FoodTruckAPI\/Packages\/HeliumLogger-1.7.0\/",
+    "77528AA6C8B451D66547916CA3CB970C85CBD7B4" : "ServerAPIDev_Swift\/FoodTruck\/FoodTruckAPI\/Packages\/SSLService-0.12.34\/",
+    "97B165520CB0C29C7F567CF6E2C95BEAE77240EE" : "ServerAPIDev_Swift\/",
+    "5F415FE5B1A6A489A13E7907BF4842C23F213A35" : "ServerAPIDev_Swift\/FoodTruck\/FoodTruckAPI\/Packages\/Kitura-CouchDB-1.7.0\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "FoodTruckClient",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "FoodTruck\/FoodTruckClient\/FoodTruckClient.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/Kitura-CouchDB.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5F415FE5B1A6A489A13E7907BF4842C23F213A35"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/BlueSSLService.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "77528AA6C8B451D66547916CA3CB970C85CBD7B4"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/IBM-Swift\/HeliumLogger.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "92AF87893551AD3F2DEE78BEF3E924B9C5659E09"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/timmybea\/ServerAPIDev_Swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "97B165520CB0C29C7F567CF6E2C95BEAE77240EE"
+    }
+  ]
+}

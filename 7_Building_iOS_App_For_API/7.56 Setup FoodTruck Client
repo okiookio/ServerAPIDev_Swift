@@ -1,0 +1,19 @@
+Setup FoodTruck Client
+
+Create a new xcode project named FoodTruckClient. Its root directory should be level with FoodTruckAPIs Root directory.
+
+CREATE A PODFILE AND INSTALL DEPENDENCIES FOR SWIFTY JSON AND ALAMOFIRE
+
+Tims-Macbook-Pro-2:FoodTruck timbeals$ cd FoodTruckClient/
+Tims-Macbook-Pro-2:FoodTruckClient timbeals$ pod init
+
+Tims-Macbook-Pro-2:FoodTruckClient timbeals$ nano podfile
+(add Alamofire and SwiftyJSON)
+
+Tims-Macbook-Pro-2:FoodTruckClient timbeals$ pod install
+
+OPEN THE PROJECT WORKSPACE AND ADD FOODTRUCKAPI PROJECT.
+Remember that when you do a pod install you are then required to use a workspace instead of a project file.
+
+File > Add files to... > (select FoodTruckAPI.xcodeproj)
+
