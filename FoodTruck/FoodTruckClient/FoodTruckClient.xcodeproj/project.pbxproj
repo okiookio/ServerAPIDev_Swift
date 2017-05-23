@@ -18,6 +18,7 @@
 		B0A5E9E91ED3E8ED00BC4905 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A5E9E81ED3E8ED00BC4905 /* Constants.swift */; };
 		B0A5E9EB1ED3EE6D00BC4905 /* FoodTruck.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A5E9EA1ED3EE6D00BC4905 /* FoodTruck.swift */; };
 		B0A5E9ED1ED3EE7C00BC4905 /* FoodTruckReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A5E9EC1ED3EE7C00BC4905 /* FoodTruckReview.swift */; };
+		B0B3FA3D1ED48CC3008C93A3 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B3FA3C1ED48CC3008C93A3 /* DataService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		B0A5E9E81ED3E8ED00BC4905 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B0A5E9EA1ED3EE6D00BC4905 /* FoodTruck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodTruck.swift; sourceTree = "<group>"; };
 		B0A5E9EC1ED3EE7C00BC4905 /* FoodTruckReview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodTruckReview.swift; sourceTree = "<group>"; };
+		B0B3FA3C1ED48CC3008C93A3 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		CE7772499A86817DF115D518 /* Pods-FoodTruckClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodTruckClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-FoodTruckClient/Pods-FoodTruckClient.release.xcconfig"; sourceTree = "<group>"; };
 		EF746DC235E2EF69F01095DE /* Pods_FoodTruckClientTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FoodTruckClientTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -146,6 +148,7 @@
 		B0A5E9E31ED3E76F00BC4905 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B0B3FA3C1ED48CC3008C93A3 /* DataService.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -384,6 +387,7 @@
 				B0A5E9ED1ED3EE7C00BC4905 /* FoodTruckReview.swift in Sources */,
 				B02083A01ED3DF4400F878C3 /* ViewController.swift in Sources */,
 				B020839E1ED3DF4400F878C3 /* AppDelegate.swift in Sources */,
+				B0B3FA3D1ED48CC3008C93A3 /* DataService.swift in Sources */,
 				B0A5E9E91ED3E8ED00BC4905 /* Constants.swift in Sources */,
 				B0A5E9EB1ED3EE6D00BC4905 /* FoodTruck.swift in Sources */,
 			);
