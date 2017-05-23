@@ -33,7 +33,7 @@ class FoodTruck: NSObject, MKAnnotation {
         
         var foodTrucks = [FoodTruck]()
         
-        var trucks = JSON(data: data)
+        let trucks = JSON(data: data)
         
         //Parse JSON data - the truck info is the value against the docId key. We don't need the key so we are using _
         
