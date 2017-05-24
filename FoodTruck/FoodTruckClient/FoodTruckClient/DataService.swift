@@ -18,14 +18,11 @@ protocol DataServiceDelegate: class {
     func trucksLoaded()
     func reviewsLoaded()
     func averageRatingUpdated()
-    
 }
 
 class DataService {
-    
     //This is our singleton
     static let sharedInstance = DataService()
-    
     
     weak var delegate: DataServiceDelegate?
     var foodTrucks = [FoodTruck]()
@@ -88,30 +85,53 @@ class DataService {
     }
     
     //GET all reviews for a specific food truck
+//    func getAllReviews(_ foodTruck: FoodTruck) {
+//        
+//        let url = "\(GET_FT_REVIEWS_URL)/\(foodTruck.docId)"
+//        
+//        Alamofire.request(url, method: .get)
+//            .validate(statusCode: 200..<300)
+//            .responseData { (response:DataResponse<Data>) in
+//                
+//                guard response.result.error == nil else {
+//                    print("Alamofire GET error: \(response.result.error?.localizedDescription)")
+//                    return
+//                }
+//                
+//                guard let data = response.data, let statusCode = response.response?.statusCode else {
+//                    print("An error occured obtaining data")
+//                    return
+//                }
+//                print("Alamofire get request succeeded: HTTP \(statusCode)")
+//                self.reviews = FoodTruckReview.parseReviewsJSON(data: data)
+//                self.delegate?.reviewsLoaded()
+//        }
+//    }
+    
+    //GET all reviews for a specific food truck
     func getAllReviews(_ foodTruck: FoodTruck) {
         
-        let url = "\(GET_FT_REVIEWS_URL)/\(foodTruck.docId)"
+        let sessionConfig = URLSessionConfiguration.default
+        let session = URLSession(configuration: sessionConfig)
         
-        Alamofire.request(url, method: .get)
-            .validate(statusCode: 200..<300)
-            .responseData { (response:DataResponse<Data>) in
-                
-                guard response.result.error == nil else {
-                    print("Alamofire GET error: \(response.result.error?.localizedDescription)")
-                    return
+        guard let url = URL(string: "\(GET_FT_REVIEWS_URL)/\(foodTruck.docId)") else { return }
+        let request = URLRequest(url: url)
+        
+        let task = session.dataTask(with: request) { (data:Data?, response:URLResponse?, error:Error?) in
+            
+            if error == nil {
+                if let data = data {
+                    let statusCode = (response as! HTTPURLResponse).statusCode
+                    print("URLSessions datatask succeeded: HTTP \(statusCode)")
+                    self.reviews = FoodTruckReview.parseReviewsJSON(data: data)
+                    self.delegate?.reviewsLoaded()
                 }
-                
-                guard let data = response.data, let statusCode = response.response?.statusCode else {
-                    print("An error occured obtaining data")
-                    return
-                }
-                print("Alamofire get request succeeded: HTTP \(statusCode)")
-                self.reviews = FoodTruckReview.parseReviewsJSON(data: data)
-                self.delegate?.reviewsLoaded()
+            } else {
+                print("URLSession datatask error: \(error?.localizedDescription)")
+            }
         }
+        task.resume()
+        session.finishTasksAndInvalidate()
     }
-    
-    
-    
     
 }
