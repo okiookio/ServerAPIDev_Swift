@@ -134,7 +134,7 @@ class DataService {
         session.finishTasksAndInvalidate()
     }
     
-    //POST add a new foodtruck
+    //POST add a new foodtruck (ALAMOFIRE)
 //    func addNewFoodTruck(_ name: String, foodType: String, avgCost: Double, latitude: Double, longitude: Double, completion: @escaping callback) {
 //        
 //        let url = POST_FT_URL
@@ -222,6 +222,97 @@ class DataService {
         session.finishTasksAndInvalidate()
     }
     
+    //POST add foodtruck review (ALAMOFIRE)
+//    func addNewReviewTo(_ foodtruckId: String, title: String, text: String, rating: Int, completion: @escaping callback) {
+//        
+//        let url = "\(POST_REVIEW_URL)/\(foodtruckId)"
+//        
+//        let headers = ["Content-Type": "application/json; charset=utf8"]
+//        
+//        let body: [String: Any] = [
+//            "truckid": foodtruckId,
+//            "reviewtitle": title,
+//            "reviewtext": text,
+//            "starrating": rating
+//        ]
+//        
+//        Alamofire.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+//        .validate(statusCode: 200..<300)
+//            .responseJSON { (response:DataResponse<Any>) in
+//            
+//                //check error nil
+//                guard response.result.error == nil else {
+//                    print("Alamofire request responded with error: HTTP \(response.result.error)")
+//                    completion(false)
+//                    return
+//                }
+//                
+//                //get status code
+//                guard let statusCode = response.response?.statusCode else {
+//                    print("error getting status code")
+//                    completion(false)
+//                    return
+//                }
+//                
+//                print("Alamofire successfully added review: HTTP \(statusCode)")
+//                //self.getAllReviews(foodtruck)
+//                completion(true)
+//        }
+//    }
     
+    //POST add foodtruck review (NSURLSESSIONS)
+    func addNewReviewTo(_ foodtruckId: String, title: String, text: String, rating: Int, completion: @escaping callback) {
+        
+        //url
+        guard let url = URL(string: "\(POST_REVIEW_URL)/\(foodtruckId)") else {
+            print("error creating url")
+            completion(false)
+            return
+        }
+        
+        //request
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        
+        
+        let bodyJSON: [String: Any] = [
+            "truckid": foodtruckId,
+            "reviewtitle": title,
+            "reviewtext": text,
+            "starrating": rating
+        ]
+        
+        var bodyData: Data
+        do {
+            bodyData = try JSONSerialization.data(withJSONObject: JSON(bodyJSON), options: [])
+            urlRequest.httpBody = bodyData
+        } catch {
+            print("could not convert json to data")
+            completion(false)
+            return
+        }
+        
+        
+        //configuration
+        let configuration = URLSessionConfiguration.default
+        let session = URLSession(configuration: configuration)
+        
+        //session performs datatask
+        let task = session.dataTask(with: urlRequest) { (data:Data?, response:URLResponse?, error:Error?) in
+            
+            guard error == nil else {
+                print("An error occured in POST review datatask: \(error?.localizedDescription)")
+                completion(false)
+                return
+            }
+
+            let statusCode = (response as! HTTPURLResponse).statusCode
+            print("POST review data task succeeded with status code: \(statusCode)")
+            completion(true)
+        }
+        task.resume()
+        session.finishTasksAndInvalidate()
+    }
+
     
 }
