@@ -28,8 +28,7 @@ class MainVC: UIViewController {
 
     
     @IBAction func addTruckButtonTapped(_ sender: UIButton) {
-    
-    
+        performSegue(withIdentifier: "showAddFoodTruckVC", sender: self)
     }
     
     
@@ -41,6 +40,10 @@ class MainVC: UIViewController {
                 destinationViewController.selectedFoodTruck = dataService.foodTrucks[indexPath.row]
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
 
 

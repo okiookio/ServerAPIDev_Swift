@@ -116,7 +116,7 @@ class DataService {
             completion(false)
             return
         }
-        
+    
         //setup configuration and session
         let configuration = URLSessionConfiguration.default
         let session = URLSession(configuration: configuration)
@@ -286,41 +286,41 @@ class DataService {
     //    }
     
     //POST add a new foodtruck (ALAMOFIRE)
-    //    func addNewFoodTruck(_ name: String, foodType: String, avgCost: Double, latitude: Double, longitude: Double, completion: @escaping callback) {
-    //
-    //        let url = POST_FT_URL
-    //
-    //        let headers = [
-    //            "Content-Type":"application/json; charset=utf-8",
-    //        ]
-    //
-    //        let body: [String: Any] = [
-    //            "name": name,
-    //            "foodtype": foodType,
-    //            "avgcost": avgCost,
-    //            "latitude": latitude,
-    //            "longitude": longitude,
-    //        ]
-    //
-    //        Alamofire.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
-    //        .validate(statusCode: 200..<300)
-    //            .responseJSON { (response:DataResponse<Any>) in
-    //                if response.result.error == nil {
-    //                    guard let statusCode = response.response?.statusCode else {
-    //                        print("An error occured")
-    //                        completion(false)
-    //                        return
-    //                    }
-    //                    print("Alamofire POST request succeeded")
-    //                    self.getAllFoodTrucks()
-    //                    completion(true)
-    //                } else {
-    //                    print("Alamofire POST request error \(response.result.error?.localizedDescription)")
-    //                    completion(false)
-    //                }
-    //        }
-    //    }
-    
+//        func addNewFoodTruck(_ name: String, foodType: String, avgCost: Double, latitude: Double, longitude: Double, completion: @escaping callback) {
+//    
+//            let url = POST_FT_URL
+//    
+//            let headers = [
+//                "Content-Type":"application/json; charset=utf-8",
+//            ]
+//    
+//            let body: [String: Any] = [
+//                "name": name,
+//                "foodtype": foodType,
+//                "avgcost": avgCost,
+//                "latitude": latitude,
+//                "longitude": longitude,
+//            ]
+//    
+//            Alamofire.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+//            .validate(statusCode: 200..<300)
+//                .responseJSON { (response:DataResponse<Any>) in
+//                    if response.result.error == nil {
+//                        guard let statusCode = response.response?.statusCode else {
+//                            print("An error occured")
+//                            completion(false)
+//                            return
+//                        }
+//                        print("Alamofire POST request succeeded: HTTP \(statusCode)")
+//                        self.getAllFoodTrucks()
+//                        completion(true)
+//                    } else {
+//                        print("Alamofire POST request error \(response.result.error?.localizedDescription)")
+//                        completion(false)
+//                    }
+//            }
+//        }
+
     //POST add foodtruck review (ALAMOFIRE)
     //    func addNewReviewTo(_ foodtruckId: String, title: String, text: String, rating: Int, completion: @escaping callback) {
     //

@@ -43,8 +43,8 @@
                                             </imageView>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOD-mC-z6n">
-                                        <rect key="frame" x="335" y="26" width="32" height="32"/>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOD-mC-z6n">
+                                        <rect key="frame" x="335" y="24" width="32" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="32" id="HM4-Ub-G3g"/>
                                             <constraint firstAttribute="height" constant="32" id="IWa-fm-Vsf"/>
@@ -72,7 +72,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u8H-Nw-ugF" id="PZy-JA-YTE">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="89"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FoodTruck Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fzp-br-zgS">
@@ -122,7 +122,7 @@
                     <navigationItem key="navigationItem" id="xd9-sb-TDd"/>
                     <connections>
                         <outlet property="tableView" destination="If9-WO-KRf" id="AzN-Mm-83H"/>
-                        <segue destination="a1R-On-yod" kind="show" id="Oh0-3I-jin"/>
+                        <segue destination="a1R-On-yod" kind="show" identifier="showAddFoodTruckVC" id="Oh0-3I-jin"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -284,12 +284,112 @@
                     <view key="view" contentMode="scaleToFill" id="haQ-Oe-eEx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6rG-wm-ZHY">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJv-RP-6Sj">
+                                        <rect key="frame" x="20" y="27" width="12" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="12" id="dQs-oJ-nQH"/>
+                                            <constraint firstAttribute="height" constant="30" id="yDC-c1-TBn"/>
+                                        </constraints>
+                                        <state key="normal" image="WhiteBackArrow"/>
+                                        <connections>
+                                            <action selector="backButtonTapped:" destination="a1R-On-yod" eventType="touchUpInside" id="tee-Ta-nO6"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add New Food Truck" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KId-z6-e6K">
+                                        <rect key="frame" x="105" y="22.5" width="166" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <color key="textColor" red="1" green="0.99607843139999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.48627450979999998" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="HJv-RP-6Sj" firstAttribute="leading" secondItem="6rG-wm-ZHY" secondAttribute="leading" constant="20" id="Tub-8p-kIy"/>
+                                    <constraint firstItem="KId-z6-e6K" firstAttribute="centerX" secondItem="6rG-wm-ZHY" secondAttribute="centerX" id="W4X-Eu-79C"/>
+                                    <constraint firstAttribute="height" constant="65" id="cLw-du-8M7"/>
+                                    <constraint firstAttribute="bottom" secondItem="HJv-RP-6Sj" secondAttribute="bottom" constant="8" id="k5v-CK-3k1"/>
+                                    <constraint firstItem="KId-z6-e6K" firstAttribute="centerY" secondItem="6rG-wm-ZHY" secondAttribute="centerY" id="nU1-Ch-ke5"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="dIS-Ms-aYP">
+                                <rect key="frame" x="36" y="85" width="303" height="294"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Food truck name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jvQ-nY-qJ2">
+                                        <rect key="frame" x="0.0" y="0.0" width="303" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Food type" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6oK-sR-0UZ">
+                                        <rect key="frame" x="0.0" y="66" width="303" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Average cost (ex. 7.99)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sBi-VP-Rt0">
+                                        <rect key="frame" x="0.0" y="132" width="303" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Latitude decimal degrees" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LB0-hF-MGv">
+                                        <rect key="frame" x="0.0" y="198" width="303" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Longitude decimal degrees" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1QZ-uT-NPw">
+                                        <rect key="frame" x="0.0" y="264" width="303" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3C6-bg-8xY">
+                                <rect key="frame" x="36" y="399" width="103" height="30"/>
+                                <state key="normal" title="Add new Truck"/>
+                                <connections>
+                                    <action selector="addFoodTruckButtonTapped:" destination="a1R-On-yod" eventType="touchUpInside" id="qDd-1J-XPQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aeY-Kt-JPT">
+                                <rect key="frame" x="291" y="399" width="48" height="30"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancelButtonTapped:" destination="a1R-On-yod" eventType="touchUpInside" id="p9F-hV-SoN"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3C6-bg-8xY" firstAttribute="leading" secondItem="haQ-Oe-eEx" secondAttribute="leadingMargin" constant="20" id="2ar-9i-Acd"/>
+                            <constraint firstItem="6rG-wm-ZHY" firstAttribute="leading" secondItem="haQ-Oe-eEx" secondAttribute="leading" id="6nL-tZ-HR2"/>
+                            <constraint firstItem="dIS-Ms-aYP" firstAttribute="top" secondItem="6rG-wm-ZHY" secondAttribute="bottom" constant="20" id="OE5-CM-Ekb"/>
+                            <constraint firstItem="3C6-bg-8xY" firstAttribute="top" secondItem="dIS-Ms-aYP" secondAttribute="bottom" constant="20" id="Q0B-OZ-N5g"/>
+                            <constraint firstItem="6rG-wm-ZHY" firstAttribute="top" secondItem="haQ-Oe-eEx" secondAttribute="top" id="QNi-OX-yIA"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="aeY-Kt-JPT" secondAttribute="trailing" constant="20" id="WFg-BR-Mle"/>
+                            <constraint firstItem="aeY-Kt-JPT" firstAttribute="top" secondItem="dIS-Ms-aYP" secondAttribute="bottom" constant="20" id="cbL-uw-fqq"/>
+                            <constraint firstAttribute="trailing" secondItem="6rG-wm-ZHY" secondAttribute="trailing" id="e8o-yN-Ywj"/>
+                            <constraint firstItem="dIS-Ms-aYP" firstAttribute="leading" secondItem="haQ-Oe-eEx" secondAttribute="leadingMargin" constant="20" id="hxD-KO-DPt"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="dIS-Ms-aYP" secondAttribute="trailing" constant="20" id="xXJ-WA-KuZ"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="avgCostTF" destination="sBi-VP-Rt0" id="s5w-HB-wnT"/>
+                        <outlet property="foodTruckNameTF" destination="jvQ-nY-qJ2" id="Z3C-BU-Kr0"/>
+                        <outlet property="foodTypeTF" destination="6oK-sR-0UZ" id="rNi-Cr-sip"/>
+                        <outlet property="latitudeTF" destination="LB0-hF-MGv" id="TDm-cR-5pA"/>
+                        <outlet property="longitudeTF" destination="1QZ-uT-NPw" id="H7b-ej-yPz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bg2-LC-Aj3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1030" y="877"/>
+            <point key="canvasLocation" x="1029.5999999999999" y="876.61169415292363"/>
         </scene>
         <!--Add ReviewsVC-->
         <scene sceneID="aEP-mf-G8y">
@@ -359,7 +459,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="122"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="O9U-fW-gh1" id="l8D-cN-ygz">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="121"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="121.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1BJ-FG-dvn" userLabel="title label">
