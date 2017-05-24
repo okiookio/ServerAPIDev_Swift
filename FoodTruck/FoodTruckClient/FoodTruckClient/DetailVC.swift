@@ -56,17 +56,23 @@ class DetailVC: UIViewController {
     }
     
     @IBAction func reviewsButtonTouched(_ sender: UIButton) {
-        
+        performSegue(withIdentifier: "showReviewsVC", sender: self)
     }
     
     
     @IBAction func addReviewsButtonTouched(_ sender: UIButton) {
+        performSegue(withIdentifier: "showAddReviewsVC", sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //
+        if segue.identifier == "showReviewsVC" {
+            let destination = segue.destination as! ReviewsVC
+            destination.selectedFoodTruck = self.selectedFoodTruck
+        } else if segue.identifier == "showAddReviewsVC" {
+            let destination = segue.destination as! AddReviewsVC
+            destination.selectedFoodTruck = self.selectedFoodTruck
+        }
     }
-    
 }
 
 extension DetailVC: DataServiceDelegate {
