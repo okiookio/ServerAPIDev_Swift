@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -25,16 +26,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PPD-Vc-wxf">
-                                        <rect key="frame" x="121" y="13" width="134" height="52"/>
+                                        <rect key="frame" x="120" y="13" width="136" height="52"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FoodTruck" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4i-Vs-83h">
-                                                <rect key="frame" x="0.0" y="0.0" width="82" height="52"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="84" height="52"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                 <color key="textColor" red="1" green="0.99607843139999996" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WTF - Logo" translatesAutoresizingMaskIntoConstraints="NO" id="qem-KM-PVE">
-                                                <rect key="frame" x="82" y="0.0" width="52" height="52"/>
+                                                <rect key="frame" x="84" y="0.0" width="52" height="52"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="52" id="8UO-bG-7t4"/>
                                                     <constraint firstAttribute="height" constant="52" id="VmF-ig-P2Y"/>
@@ -101,6 +102,7 @@
                                             <outlet property="avgCostLabel" destination="Y59-me-bKF" id="Zrz-WM-Fcd"/>
                                             <outlet property="foodTypeLabel" destination="Yle-XX-IAE" id="91S-EL-yZw"/>
                                             <outlet property="nameLabel" destination="fzp-br-zgS" id="RDO-r9-UWF"/>
+                                            <segue destination="AwA-6G-qch" kind="show" identifier="ShowDetailsVC" id="6Pa-In-3Tw"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -126,6 +128,148 @@
             </objects>
             <point key="canvasLocation" x="1076" y="137.18140929535232"/>
         </scene>
+        <!--DetailVC-->
+        <scene sceneID="9Zi-G5-Bab">
+            <objects>
+                <viewController id="AwA-6G-qch" customClass="DetailVC" customModule="FoodTruckClient" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="uRe-Ho-JMM"/>
+                        <viewControllerLayoutGuide type="bottom" id="86X-mA-hmX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Z8G-YP-1Wi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LaG-v1-zg2">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gqa-nt-n5e" userLabel="back button">
+                                        <rect key="frame" x="20" y="17" width="15" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="15" id="Z87-Yr-Y0m"/>
+                                            <constraint firstAttribute="height" constant="40" id="cMo-S7-m4j"/>
+                                        </constraints>
+                                        <state key="normal" image="WhiteBackArrow"/>
+                                        <connections>
+                                            <action selector="backButtonTapped:" destination="AwA-6G-qch" eventType="touchUpInside" id="C2r-Hb-XVt"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FoodTruck Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c76-Jx-oxt">
+                                        <rect key="frame" x="112" y="21" width="152" height="23"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.48627450979999998" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="65" id="2xe-Wi-TOb"/>
+                                    <constraint firstItem="c76-Jx-oxt" firstAttribute="centerY" secondItem="LaG-v1-zg2" secondAttribute="centerY" id="CT8-vg-lUQ"/>
+                                    <constraint firstItem="Gqa-nt-n5e" firstAttribute="leading" secondItem="LaG-v1-zg2" secondAttribute="leading" constant="20" id="Chq-p0-zFX"/>
+                                    <constraint firstItem="c76-Jx-oxt" firstAttribute="centerX" secondItem="LaG-v1-zg2" secondAttribute="centerX" id="CnS-Jd-YFA"/>
+                                    <constraint firstAttribute="bottom" secondItem="Gqa-nt-n5e" secondAttribute="bottom" constant="8" id="TIz-Yq-zEC"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="L5M-Ir-tjd" userLabel="headingStack">
+                                <rect key="frame" x="16" y="73" width="130" height="78"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Food Type:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LoL-VE-rrV">
+                                        <rect key="frame" x="0.0" y="0.0" width="130" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.48627450979999998" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average Cost:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H2h-KF-myK">
+                                        <rect key="frame" x="0.0" y="29" width="130" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.48627450979999998" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average Rating: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5OA-mD-GKa">
+                                        <rect key="frame" x="0.0" y="57.5" width="130" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.48627450979999998" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="130" id="QFM-HS-uY1"/>
+                                    <constraint firstAttribute="height" constant="78" id="Xof-er-RbH"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="YfE-Go-l9d" userLabel="valuesStack">
+                                <rect key="frame" x="154" y="74" width="197" height="77.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dfF-4Z-lvf" userLabel="foodTypeVal">
+                                        <rect key="frame" x="0.0" y="0.0" width="197" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srW-ZG-FtI" userLabel="avgCostVal">
+                                        <rect key="frame" x="0.0" y="28.5" width="197" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4TH-yP-9SV" userLabel="avgRatingVal">
+                                        <rect key="frame" x="0.0" y="57" width="197" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tnt-Tm-vAd">
+                                <rect key="frame" x="16" y="159" width="57" height="30"/>
+                                <state key="normal" title="Reviews"/>
+                                <connections>
+                                    <action selector="reviewsButtonTouched:" destination="AwA-6G-qch" eventType="touchUpInside" id="apG-Hr-WwW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eaM-2E-RQu">
+                                <rect key="frame" x="279" y="159" width="80" height="30"/>
+                                <state key="normal" title="Add Review"/>
+                                <connections>
+                                    <action selector="addReviewsButtonTouched:" destination="AwA-6G-qch" eventType="touchUpInside" id="bOm-Mm-HiS"/>
+                                </connections>
+                            </button>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="yDr-ig-zvo">
+                                <rect key="frame" x="16" y="197" width="343" height="450"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="L5M-Ir-tjd" firstAttribute="leading" secondItem="Z8G-YP-1Wi" secondAttribute="leadingMargin" id="5hm-3n-MXd"/>
+                            <constraint firstItem="86X-mA-hmX" firstAttribute="top" secondItem="yDr-ig-zvo" secondAttribute="bottom" constant="20" id="A7E-21-yZD"/>
+                            <constraint firstItem="yDr-ig-zvo" firstAttribute="leading" secondItem="Z8G-YP-1Wi" secondAttribute="leadingMargin" id="C6a-ao-dDW"/>
+                            <constraint firstItem="Tnt-Tm-vAd" firstAttribute="top" secondItem="L5M-Ir-tjd" secondAttribute="bottom" constant="8" id="JsQ-M8-nXw"/>
+                            <constraint firstItem="LaG-v1-zg2" firstAttribute="top" secondItem="Z8G-YP-1Wi" secondAttribute="top" id="Pdf-hk-w0L"/>
+                            <constraint firstItem="LaG-v1-zg2" firstAttribute="leading" secondItem="Z8G-YP-1Wi" secondAttribute="leading" id="Rlj-X5-QTq"/>
+                            <constraint firstItem="L5M-Ir-tjd" firstAttribute="top" secondItem="LaG-v1-zg2" secondAttribute="bottom" constant="8" id="W0w-qG-RcI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="eaM-2E-RQu" secondAttribute="trailing" id="bjs-Gy-nbf"/>
+                            <constraint firstItem="yDr-ig-zvo" firstAttribute="trailing" secondItem="Z8G-YP-1Wi" secondAttribute="trailingMargin" id="fWt-Zm-OfN"/>
+                            <constraint firstItem="Tnt-Tm-vAd" firstAttribute="leading" secondItem="Z8G-YP-1Wi" secondAttribute="leadingMargin" id="fYN-Af-ZZg"/>
+                            <constraint firstItem="YfE-Go-l9d" firstAttribute="leading" secondItem="L5M-Ir-tjd" secondAttribute="trailing" constant="8" id="jMW-eM-Bc3"/>
+                            <constraint firstItem="yDr-ig-zvo" firstAttribute="top" secondItem="eaM-2E-RQu" secondAttribute="bottom" constant="8" id="jwj-lo-bMV"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YfE-Go-l9d" secondAttribute="trailing" constant="8" id="wjp-eE-2jV"/>
+                            <constraint firstAttribute="trailing" secondItem="LaG-v1-zg2" secondAttribute="trailing" id="wrq-sL-Imn"/>
+                            <constraint firstItem="eaM-2E-RQu" firstAttribute="top" secondItem="YfE-Go-l9d" secondAttribute="bottom" constant="8" id="xNS-RQ-OAu"/>
+                            <constraint firstItem="YfE-Go-l9d" firstAttribute="top" secondItem="LaG-v1-zg2" secondAttribute="bottom" constant="9" id="xna-vs-slF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="avgCostLabel" destination="srW-ZG-FtI" id="o93-R8-YlG"/>
+                        <outlet property="avgRatingLabel" destination="4TH-yP-9SV" id="2rE-4z-f8k"/>
+                        <outlet property="foodTruckNameLabel" destination="c76-Jx-oxt" id="Yee-BN-ctD"/>
+                        <outlet property="foodTypeLabel" destination="dfF-4Z-lvf" id="LS0-6T-2eh"/>
+                        <outlet property="mapView" destination="yDr-ig-zvo" id="MXV-72-N4y"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OH4-nt-a5w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1768.8" y="136.28185907046478"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="JrL-ch-97X">
             <objects>
@@ -148,5 +292,6 @@
     <resources>
         <image name="Plus" width="56" height="56"/>
         <image name="WTF - Logo" width="424" height="236"/>
+        <image name="WhiteBackArrow" width="34" height="73"/>
     </resources>
 </document>

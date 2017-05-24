@@ -34,7 +34,13 @@ class MainVC: UIViewController {
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //come back to this
+
+        if segue.identifier == "ShowDetailsVC" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationViewController = segue.destination as! DetailVC
+                destinationViewController.selectedFoodTruck = dataService.foodTrucks[indexPath.row]
+            }
+        }
     }
 
 
