@@ -23,7 +23,7 @@ let GET_ALL_FT_URL = "\(BASE_API_URL)/trucks"
 //GET all reviews for a specific truck
 let GET_FT_REVIEWS_URL = "\(BASE_API_URL)/trucks/reviews"
 
-//GET star rating for a specific foodtruck
+//GET average star rating for a specific foodtruck
 let GET_FT_STAR_URL = "\(BASE_API_URL)/reviews/rating"
 
 //POST food truck
