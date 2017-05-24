@@ -238,28 +238,28 @@ class DataService {
     //MARK: ALAMOFIRE METHODS
     
     //GET all trucks (ALAMOFIRE)
-    //    func getAllFoodTrucks() {
-    //        let url = GET_ALL_FT_URL
-    //
-    //        Alamofire.request(url, method: .get)
-    //            .validate(statusCode: 200..<300)
-    //            .responseData { (response:DataResponse<Data>) in
-    //
-    //                guard response.result.error == nil else {
-    //                    print("Alamofire get error: \(response.result.error?.localizedDescription)")
-    //                    return
-    //                }
-    //
-    //                guard let data = response.data, let statusCode = response.response?.statusCode else {
-    //                    print("An error occured obtaining data")
-    //                    return
-    //                }
-    //
-    //                print("Alamofire request succeeded: \(statusCode)")
-    //                self.foodTrucks = FoodTruck.parseFoodTruckJSONData(data: data)
-    //                self.delegate?.trucksLoaded()
-    //        }
-    //    }
+//        func getAllFoodTrucks() {
+//            let url = GET_ALL_FT_URL
+//    
+//            Alamofire.request(url, method: .get)
+//                .validate(statusCode: 200..<300)
+//                .responseData { (response:DataResponse<Data>) in
+//    
+//                    guard response.result.error == nil else {
+//                        print("Alamofire get error: \(response.result.error?.localizedDescription)")
+//                        return
+//                    }
+//    
+//                    guard let data = response.data, let statusCode = response.response?.statusCode else {
+//                        print("An error occured obtaining data")
+//                        return
+//                    }
+//    
+//                    print("Alamofire request succeeded: \(statusCode)")
+//                    self.foodTrucks = FoodTruck.parseFoodTruckJSONData(data: data)
+//                    self.delegate?.trucksLoaded()
+//            }
+//        }
     
     //GET all reviews for a specific food truck (ALAMOFIRE)
     //    func getAllReviews(_ foodTruck: FoodTruck) {

@@ -42,20 +42,24 @@
                                             </imageView>
                                         </subviews>
                                     </stackView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Plus" translatesAutoresizingMaskIntoConstraints="NO" id="oo5-Qc-iQX">
-                                        <rect key="frame" x="342" y="26" width="25" height="25"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOD-mC-z6n">
+                                        <rect key="frame" x="335" y="26" width="32" height="32"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="25" id="OG0-b3-1CL"/>
-                                            <constraint firstAttribute="height" constant="25" id="ogS-qR-oJ3"/>
+                                            <constraint firstAttribute="width" constant="32" id="HM4-Ub-G3g"/>
+                                            <constraint firstAttribute="height" constant="32" id="IWa-fm-Vsf"/>
                                         </constraints>
-                                    </imageView>
+                                        <state key="normal" image="Plus"/>
+                                        <connections>
+                                            <action selector="addTruckButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0yb-ZG-NmK"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.48627450980392156" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="oo5-Qc-iQX" secondAttribute="bottom" constant="14" id="45z-he-NoJ"/>
                                     <constraint firstAttribute="height" constant="65" id="GE2-Bq-TH3"/>
                                     <constraint firstItem="PPD-Vc-wxf" firstAttribute="centerX" secondItem="A7n-0y-CDL" secondAttribute="centerX" id="GL9-Lr-8UX"/>
-                                    <constraint firstAttribute="trailing" secondItem="oo5-Qc-iQX" secondAttribute="trailing" constant="8" id="bP0-6C-mYL"/>
+                                    <constraint firstAttribute="bottom" secondItem="NOD-mC-z6n" secondAttribute="bottom" constant="9" id="cmW-2f-AtA"/>
+                                    <constraint firstAttribute="trailing" secondItem="NOD-mC-z6n" secondAttribute="trailing" constant="8" id="rPe-bQ-gRa"/>
                                     <constraint firstAttribute="bottom" secondItem="PPD-Vc-wxf" secondAttribute="bottom" id="sQC-QU-E71"/>
                                 </constraints>
                             </view>
