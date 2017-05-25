@@ -1,4 +1,4 @@
-//
+ //
 //  DataService.swift
 //  FoodTruckClient
 //
@@ -98,6 +98,7 @@ class DataService {
         
         let urlRequest = NSMutableURLRequest(url: url)
         urlRequest.httpMethod = "POST"
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let bodyJSON: [String: Any] = [
             "name": name,
@@ -109,7 +110,7 @@ class DataService {
         
         var bodyData: Data
         do {
-            bodyData = try JSONSerialization.data(withJSONObject: JSON(bodyJSON), options: [])
+            bodyData = try JSONSerialization.data(withJSONObject: bodyJSON, options: [])
             urlRequest.httpBody = bodyData
         } catch let error {
             print("Could not convert json to data: \(error.localizedDescription)")
@@ -131,7 +132,6 @@ class DataService {
             
             let statusCode = (response as! HTTPURLResponse).statusCode
             print("URLSessions POST request succeeded: HTTP \(statusCode)")
-            self.getAllFoodTrucks()
             completion(true)
         }
         task.resume()
@@ -151,7 +151,7 @@ class DataService {
         //request
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
-        
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let bodyJSON: [String: Any] = [
             "truckid": foodtruckId,
