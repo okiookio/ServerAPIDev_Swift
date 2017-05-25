@@ -10,28 +10,63 @@ import UIKit
 
 class AddReviewsVC: UIViewController {
 
+    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var reviewTitleTF: UITextField!
+    @IBOutlet weak var reviewTextView: UITextView!
+    @IBOutlet weak var starRatingLabel: UILabel!
+    @IBOutlet weak var starRatingStepper: UIStepper!
+    
     var selectedFoodTruck: FoodTruck?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        if let truck = selectedFoodTruck {
+            headerLabel.text = truck.name
+            starRatingLabel.text = "Star Rating: \(starRatingStepper.value)"
+            
+        } else {
+            dismissViewController()
+        }
+        
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func showAlert(with title: String, message: String) {
+     
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func addReviewButtonTapped(_ sender: UIButton) {
+    
     }
-    */
-
+    
+    
+    @IBAction func stepperValueDidChange(_ sender: UIStepper) {
+        let newValue = Int(sender.value)
+        starRatingLabel.text = "Star Rating: \(newValue)"
+        
+    }
+    
+    
+    @IBAction func cancelButtonTapped(_ sender: UIButton) {
+        dismissViewController()
+    }
+    
+    
+    
+    @IBAction func backButtonTouched(_ sender: Any) {
+        dismissViewController()
+    }
+    
+    func dismissViewController() {
+        OperationQueue.main.addOperation {
+            _ = self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
 }

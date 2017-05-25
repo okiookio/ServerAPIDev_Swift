@@ -402,12 +402,119 @@
                     <view key="view" contentMode="scaleToFill" id="eDx-Cm-MpP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CXS-p0-TP7">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O4Z-1f-YMb">
+                                        <rect key="frame" x="20" y="27" width="12" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="12" id="eRO-vn-IZR"/>
+                                            <constraint firstAttribute="height" constant="30" id="wP4-g3-OaF"/>
+                                        </constraints>
+                                        <state key="normal" image="WhiteBackArrow"/>
+                                        <connections>
+                                            <action selector="backButtonTouched:" destination="pWP-k0-yj3" eventType="touchUpInside" id="XL5-gF-FyT"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Review" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJH-kY-2YJ">
+                                        <rect key="frame" x="140" y="22" width="94" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.48627450979999998" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="O4Z-1f-YMb" secondAttribute="bottom" constant="8" id="9Fd-Fm-VE8"/>
+                                    <constraint firstAttribute="height" constant="65" id="H0A-KY-9Ce"/>
+                                    <constraint firstItem="O4Z-1f-YMb" firstAttribute="leading" secondItem="CXS-p0-TP7" secondAttribute="leading" constant="20" id="h74-WJ-Lkw"/>
+                                    <constraint firstItem="NJH-kY-2YJ" firstAttribute="centerX" secondItem="CXS-p0-TP7" secondAttribute="centerX" id="jFb-pj-vRu"/>
+                                    <constraint firstItem="NJH-kY-2YJ" firstAttribute="centerY" secondItem="CXS-p0-TP7" secondAttribute="centerY" id="utY-sR-axT"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Review" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdj-4c-ldV">
+                                <rect key="frame" x="36" y="73" width="100" height="23"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <color key="textColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="3" minimumValue="1" maximumValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="PEI-fe-4LU">
+                                <rect key="frame" x="36" y="166" width="94" height="29"/>
+                                <connections>
+                                    <action selector="stepperValueDidChange:" destination="pWP-k0-yj3" eventType="valueChanged" id="JsJ-gW-mt0"/>
+                                </connections>
+                            </stepper>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ftn-IQ-eLg">
+                                <rect key="frame" x="36" y="116" width="303" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Star rating:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9N-tc-0Bf">
+                                <rect key="frame" x="138" y="169" width="99" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ocP-1E-qsP">
+                                <rect key="frame" x="36" y="215" width="303" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="iOa-Tj-YTY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDe-3C-PFt">
+                                <rect key="frame" x="36" y="435" width="80" height="30"/>
+                                <state key="normal" title="Add Review"/>
+                                <connections>
+                                    <action selector="addReviewButtonTapped:" destination="pWP-k0-yj3" eventType="touchUpInside" id="eWW-BP-mSI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XDy-4w-ofg">
+                                <rect key="frame" x="291" y="435" width="48" height="30"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancelButtonTapped:" destination="pWP-k0-yj3" eventType="touchUpInside" id="d4m-qg-Bp5"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ftn-IQ-eLg" secondAttribute="trailing" constant="20" id="7l5-es-wvg"/>
+                            <constraint firstItem="CXS-p0-TP7" firstAttribute="leading" secondItem="eDx-Cm-MpP" secondAttribute="leading" id="BOr-Nf-yVn"/>
+                            <constraint firstItem="cdj-4c-ldV" firstAttribute="leading" secondItem="eDx-Cm-MpP" secondAttribute="leadingMargin" constant="20" id="BQ3-Ab-bHc"/>
+                            <constraint firstItem="XDy-4w-ofg" firstAttribute="top" secondItem="ocP-1E-qsP" secondAttribute="bottom" constant="20" id="DAm-m4-WCu"/>
+                            <constraint firstItem="PEI-fe-4LU" firstAttribute="leading" secondItem="eDx-Cm-MpP" secondAttribute="leadingMargin" constant="20" id="DTO-d6-14x"/>
+                            <constraint firstItem="Ftn-IQ-eLg" firstAttribute="leading" secondItem="eDx-Cm-MpP" secondAttribute="leadingMargin" constant="20" id="F2r-7x-SKz"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ocP-1E-qsP" secondAttribute="trailing" constant="20" id="FEO-8a-dxz"/>
+                            <constraint firstAttribute="trailing" secondItem="CXS-p0-TP7" secondAttribute="trailing" id="FYw-LS-EGi"/>
+                            <constraint firstItem="Ftn-IQ-eLg" firstAttribute="top" secondItem="cdj-4c-ldV" secondAttribute="bottom" constant="20" id="Lmy-GN-dOx"/>
+                            <constraint firstItem="PEI-fe-4LU" firstAttribute="top" secondItem="Ftn-IQ-eLg" secondAttribute="bottom" constant="20" id="Ogt-Ut-9vR"/>
+                            <constraint firstItem="ocP-1E-qsP" firstAttribute="leading" secondItem="eDx-Cm-MpP" secondAttribute="leadingMargin" constant="20" id="PeG-ag-Clk"/>
+                            <constraint firstItem="V9N-tc-0Bf" firstAttribute="leading" secondItem="PEI-fe-4LU" secondAttribute="trailing" constant="8" id="a2M-7U-hcB"/>
+                            <constraint firstItem="CXS-p0-TP7" firstAttribute="top" secondItem="eDx-Cm-MpP" secondAttribute="top" id="bwO-Ow-ecr"/>
+                            <constraint firstItem="bDe-3C-PFt" firstAttribute="leading" secondItem="eDx-Cm-MpP" secondAttribute="leadingMargin" constant="20" id="eGB-vq-UHA"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="XDy-4w-ofg" secondAttribute="trailing" constant="20" id="j0Y-5P-3aJ"/>
+                            <constraint firstItem="cdj-4c-ldV" firstAttribute="top" secondItem="CXS-p0-TP7" secondAttribute="bottom" constant="8" id="jKW-Ak-j3u"/>
+                            <constraint firstItem="ocP-1E-qsP" firstAttribute="top" secondItem="PEI-fe-4LU" secondAttribute="bottom" constant="20" id="n2E-85-omI"/>
+                            <constraint firstItem="bDe-3C-PFt" firstAttribute="top" secondItem="ocP-1E-qsP" secondAttribute="bottom" constant="20" id="qJq-VU-USV"/>
+                            <constraint firstItem="V9N-tc-0Bf" firstAttribute="centerY" secondItem="PEI-fe-4LU" secondAttribute="centerY" id="qLP-z9-PjI"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="headerLabel" destination="NJH-kY-2YJ" id="Z77-jc-DB8"/>
+                        <outlet property="reviewTextView" destination="ocP-1E-qsP" id="Ov9-j5-A1G"/>
+                        <outlet property="reviewTitleTF" destination="Ftn-IQ-eLg" id="t6W-Cw-5tb"/>
+                        <outlet property="starRatingLabel" destination="V9N-tc-0Bf" id="Aqi-hB-StJ"/>
+                        <outlet property="starRatingStepper" destination="PEI-fe-4LU" id="N22-bP-lyN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T77-vP-bBr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1769" y="877"/>
+            <point key="canvasLocation" x="1768.8" y="876.61169415292363"/>
         </scene>
         <!--ReviewsVC-->
         <scene sceneID="ACQ-PX-2h9">
