@@ -74,7 +74,7 @@ extension ReviewsVC: DataServiceDelegate {
     }
     
     func reviewsLoaded() {
-        OperationQueue.main.addOperation {
+        DispatchQueue.main.async {
             print("reviews updated")
             self.tableView.reloadData()
         }

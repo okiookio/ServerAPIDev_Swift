@@ -31,7 +31,7 @@ struct FoodTruckReview {
                     
                     var newReview = FoodTruckReview()
                     
-                    newReview.docId = review["id"] as! String
+                    newReview.docId = review["docId"] as! String
                     newReview.truckId = review["truckid"] as! String
                     newReview.reviewTitle = review["reviewtitle"] as! String
                     newReview.reviewText = review["reviewtext"] as! String

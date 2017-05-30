@@ -16,7 +16,8 @@ class AddFoodTruckVC: UIViewController {
     @IBOutlet weak var avgCostTF: UITextField!
     @IBOutlet weak var latitudeTF: UITextField!
     @IBOutlet weak var longitudeTF: UITextField!
-    
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+
     var dataService = DataService.sharedInstance
 
     override func viewDidLoad() {
@@ -31,10 +32,14 @@ class AddFoodTruckVC: UIViewController {
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
+        spinner.stopAnimating()
     }
     
     
     @IBAction func addFoodTruckButtonTapped(_ sender: UIButton) {
+        
+        spinner.startAnimating()
+        
         guard foodTruckNameTF.text != "", let foodTruckName = foodTruckNameTF.text else {
             showAlert(with: "Error", message: "Please enter name of food truck")
             return
@@ -62,9 +67,15 @@ class AddFoodTruckVC: UIViewController {
 
         dataService.addNewFoodTruck(foodTruckName, foodType: foodType, avgCost: averageCost, latitude: lat, longitude: long) { (success) in
             if success {
-                print("Food truck saved successfully")
-                self.dataService.getAllFoodTrucks()
-                self.dismissViewController()
+                self.dataService.getAllFoodTrucks(completion: { (success) in
+                    if success {
+                        print("Food truck saved successfully")
+                        self.dismissViewController()
+                    } else {
+                        print("Unknown error occured")
+                        self.showAlert(with: "Error", message: "An unknown error occured")
+                    }
+                })
             } else {
                 self.showAlert(with: "Error", message: "An error occured saving food truck")
             }
@@ -81,7 +92,7 @@ class AddFoodTruckVC: UIViewController {
     }
     
     func dismissViewController() {
-        OperationQueue.main.addOperation {
+        DispatchQueue.main.async {
             _ = self.navigationController?.popViewController(animated: true)
         }
     }

@@ -19,8 +19,13 @@ class MainVC: UIViewController {
         super.viewDidLoad()
 
         dataService.delegate = self
-        dataService.getAllFoodTrucks()
-        
+        dataService.getAllFoodTrucks { (success) in
+            if success {
+                print("Food trucks loaded succesfully")
+            } else {
+                print("Could not get food trucks")
+            }
+        }
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -54,7 +59,7 @@ extension MainVC: DataServiceDelegate {
     
     func trucksLoaded() {
         
-        OperationQueue.main.addOperation {
+        DispatchQueue.main.async {
             print("trucks loaded")
             self.tableView.reloadData()
         }

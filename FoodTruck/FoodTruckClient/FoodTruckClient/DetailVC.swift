@@ -86,7 +86,7 @@ extension DetailVC: DataServiceDelegate {
     }
     
     func averageRatingUpdated() {
-        OperationQueue.main.addOperation {
+        DispatchQueue.main.async {
             let rating = self.dataService.averageRating
             self.avgRatingLabel.text = "\(rating)"
         }

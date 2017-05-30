@@ -41,7 +41,7 @@ class FoodTruck: NSObject, MKAnnotation {
             
             let newTruck = FoodTruck()
             
-            newTruck.docId = truck["id"].stringValue
+            newTruck.docId = truck["docId"].stringValue
             newTruck.name = truck["name"].stringValue
             newTruck.foodType = truck["foodtype"].stringValue
             newTruck.avgCost = String(format: "%.2f", truck["avgcost"].doubleValue)

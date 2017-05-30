@@ -31,14 +31,18 @@ class DataService {
     
 
 //    GET all trucks (NSURLSESSIONS)
-    func getAllFoodTrucks() {
+    func getAllFoodTrucks(completion: @escaping callback) {
         
         //create session and optionally set URLSessionDelegate
         let sessionConfig = URLSessionConfiguration.default
         let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
         
         //create a request
-        guard let url = URL(string: GET_ALL_FT_URL) else { return }
+        guard let url = URL(string: GET_ALL_FT_URL) else {
+            completion(false)
+            return
+        }
+        
         let request = URLRequest(url: url)
         
         let task = session.dataTask(with: request) { (data:Data?, response:URLResponse?, error:Error?) in
@@ -50,9 +54,13 @@ class DataService {
                 if let data = data {
                     self.foodTrucks = FoodTruck.parseFoodTruckJSONData(data: data)
                     self.delegate?.trucksLoaded()
+                    completion(true)
+                } else {
+                    completion(false)
                 }
             } else {
                 print("NSURLSession get error: \(error?.localizedDescription)")
+                completion(false)
             }
             
         }
@@ -162,7 +170,7 @@ class DataService {
         
         var bodyData: Data
         do {
-            bodyData = try JSONSerialization.data(withJSONObject: JSON(bodyJSON), options: [])
+            bodyData = try JSONSerialization.data(withJSONObject: bodyJSON, options: [])
             urlRequest.httpBody = bodyData
         } catch {
             print("could not convert json to data")
@@ -322,42 +330,42 @@ class DataService {
 //        }
 
     //POST add foodtruck review (ALAMOFIRE)
-    //    func addNewReviewTo(_ foodtruckId: String, title: String, text: String, rating: Int, completion: @escaping callback) {
-    //
-    //        let url = "\(POST_REVIEW_URL)/\(foodtruckId)"
-    //
-    //        let headers = ["Content-Type": "application/json; charset=utf8"]
-    //
-    //        let body: [String: Any] = [
-    //            "truckid": foodtruckId,
-    //            "reviewtitle": title,
-    //            "reviewtext": text,
-    //            "starrating": rating
-    //        ]
-    //
-    //        Alamofire.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
-    //        .validate(statusCode: 200..<300)
-    //            .responseJSON { (response:DataResponse<Any>) in
-    //
-    //                //check error nil
-    //                guard response.result.error == nil else {
-    //                    print("Alamofire request responded with error: HTTP \(response.result.error)")
-    //                    completion(false)
-    //                    return
-    //                }
-    //
-    //                //get status code
-    //                guard let statusCode = response.response?.statusCode else {
-    //                    print("error getting status code")
-    //                    completion(false)
-    //                    return
-    //                }
-    //
-    //                print("Alamofire successfully added review: HTTP \(statusCode)")
-    //                //self.getAllReviews(foodtruck)
-    //                completion(true)
-    //        }
-    //    }
+//        func addNewReviewTo(_ foodtruckId: String, title: String, text: String, rating: Int, completion: @escaping callback) {
+//    
+//            let url = "\(POST_REVIEW_URL)/\(foodtruckId)"
+//    
+//            let headers = ["Content-Type": "application/json; charset=utf8"]
+//    
+//            let body: [String: Any] = [
+//                "truckid": foodtruckId,
+//                "reviewtitle": title,
+//                "reviewtext": text,
+//                "starrating": rating
+//            ]
+//    
+//            Alamofire.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers)
+//            .validate(statusCode: 200..<300)
+//                .responseJSON { (response:DataResponse<Any>) in
+//    
+//                    //check error nil
+//                    guard response.result.error == nil else {
+//                        print("Alamofire request responded with error: HTTP \(response.result.error)")
+//                        completion(false)
+//                        return
+//                    }
+//    
+//                    //get status code
+//                    guard let statusCode = response.response?.statusCode else {
+//                        print("error getting status code")
+//                        completion(false)
+//                        return
+//                    }
+//    
+//                    print("Alamofire successfully added review: HTTP \(statusCode)")
+//                    //self.getAllReviews(foodtruck)
+//                    completion(true)
+//            }
+//        }
     
     //GET average star rating for specific truck (ALAMOFIRE)
     
@@ -397,6 +405,4 @@ class DataService {
     //                }
     //        }
     //    }
-
-
 }
